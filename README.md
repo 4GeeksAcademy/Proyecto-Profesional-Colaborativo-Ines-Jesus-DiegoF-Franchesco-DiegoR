@@ -16,14 +16,14 @@ francesa de moda (cliente ficticio). Proyecto del bootcamp de 4Geeks Academy —
 
 | Vista | Archivo | Responsable | Rama |
 | --- | --- | --- | --- |
-| Sistema de diseño, navbar y footer | `src/`, `partials/` | Francesco | *(ya en `main`)* |
+| Sistema de diseño, navbar y footer | `src/`, `partials/` | Franchesco | *(ya en `main`)* |
 | 1 · Home | `index.html` | Diego Reynoso | `feat/home` |
 | 2 · Catálogo | `catalogo.html` | Diego Fuentes | `feat/catalogo` |
 | 3 · Vista de producto | `producto.html` | *Por asignar* | `feat/producto` |
 | 4 · Carrito | `carrito.html` | *Por asignar* | `feat/carrito` |
 | 5 · Checkout | `checkout.html` | *Por asignar* | `feat/checkout` |
 
-Quedan tres vistas por repartir entre **Francesco, Inés y Jesús**.
+Quedan tres vistas por repartir entre **Franchesco, Inés y Jesús**.
 
 ## Estado actual
 
@@ -201,10 +201,10 @@ copiado en las 5 páginas. Si cambia, se cambia en el partial y se replica.
 
 ## Créditos
 
-Equipo: **Diego Reynoso, Diego Fuentes, Francesco, Inés y Jesús** — 4Geeks Academy.
+Equipo: **Diego Reynoso, Diego Fuentes, Franchesco, Inés y Jesús** — 4Geeks Academy.
 
 El sistema de diseño, la navbar, el footer y la dirección de arte los desarrolló
-**Francesco**; el prototipo completo del que salen está guardado como referencia
+**Franchesco**; el prototipo completo del que salen está guardado como referencia
 para consultar cómo resolvió cada vista.
 
 Plantilla base: [`html-hello`](https://github.com/4GeeksAcademy/html-hello).
