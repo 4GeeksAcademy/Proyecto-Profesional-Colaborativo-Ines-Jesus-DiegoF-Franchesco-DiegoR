@@ -1,0 +1,14 @@
+# ============================================================
+# .gitignore — le dice a Git qué archivos NO debe guardar.
+# ============================================================
+
+# Binario de Tailwind (pesa ~80 MB y se descarga solo con build.sh,
+# por eso no tiene sentido subirlo al repositorio)
+bin/
+
+# Archivos basura del sistema operativo o del editor
+.DS_Store
+*.log
+
+# NOTA: css/styles.css SÍ se versiona: es el CSS ya compilado
+# que usan las páginas, así el prototipo funciona nada más clonarlo.

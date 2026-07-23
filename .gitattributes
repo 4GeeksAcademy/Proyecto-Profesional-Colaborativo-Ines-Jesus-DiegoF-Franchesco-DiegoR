@@ -1,0 +1,21 @@
+# ============================================================
+# .gitattributes — normaliza los saltos de línea del proyecto.
+#
+# ¿Por qué hace falta? Windows termina las líneas con CRLF y
+# Mac/Linux con LF. Sin este archivo, cuando alguien de Windows
+# y alguien de Mac tocan el mismo fichero, Git cree que han
+# cambiado TODAS las líneas y el Pull Request sale ilegible.
+#
+# Con esto, el repositorio guarda siempre LF y da igual el
+# sistema operativo de cada persona.
+# ============================================================
+
+* text=auto eol=lf
+
+# Binarios: que Git no intente tocarles las líneas
+*.jpg  binary
+*.jpeg binary
+*.png  binary
+*.webp binary
+*.ico  binary
+*.pdf  binary

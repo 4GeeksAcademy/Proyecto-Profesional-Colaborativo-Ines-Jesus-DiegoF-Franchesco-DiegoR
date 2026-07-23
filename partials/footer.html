@@ -1,0 +1,97 @@
+<!-- ════════════════════════════════════════════════════════════════════
+     FOOTER CANÓNICO — Maison Lumière
+     ────────────────────────────────────────────────────────────────────
+     FUENTE ÚNICA del pie de página. El bloque entre "BEGIN footer" y
+     "END footer" se pega IDÉNTICO en las 5 páginas.
+
+     ¿Qué contiene? (requisito del proyecto)
+     · Categorías: calzado, camisas, pantalones y accesorios
+     · Legal: términos y condiciones, política de privacidad y
+       "sobre la marca"
+     · Contacto: dirección postal, email y teléfono
+     · Datos estructurados Schema.org (JSON-LD) de la organización:
+       un pequeño bloque de texto que Google entiende y que mejora el
+       SEO. Al ir junto al footer, aparece en TODAS las vistas.
+
+     Este archivo NO se sirve al navegador: es solo la referencia.
+     ════════════════════════════════════════════════════════════════════ -->
+<!-- BEGIN footer (canónico) -->
+<footer class="mt-20 border-t-2 border-tinta/40 bg-crudo">
+  <div class="contenedor grid grid-cols-1 gap-x-[clamp(24px,3vw,48px)] gap-y-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+
+    <!-- Columna 1: la marca -->
+    <div>
+      <svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true" fill="none"
+           stroke="var(--color-acento)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
+        <path d="M8 34 L8 14 L16 26 L24 14 L24 34"/>
+        <path d="M30 14 L30 34 L40 34"/>
+      </svg>
+      <p class="mt-4 max-w-[26ch] text-[14px] leading-relaxed text-tinta/75">
+        Prêt-à-porter hecho en Francia desde 1998. París, Rue de la Lumière 12.
+      </p>
+    </div>
+
+    <!-- Columna 2: categorías de la tienda (los enlaces llevan a la
+         vista catálogo; ?cat= indica la categoría preseleccionada) -->
+    <nav aria-label="Categorías" class="flex flex-col gap-2.5">
+      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Categorías</h2>
+      <a href="catalogo.html?cat=calzado" class="text-[14px] hover:text-acento">Calzado</a>
+      <a href="catalogo.html?cat=camisas" class="text-[14px] hover:text-acento">Camisas</a>
+      <a href="catalogo.html?cat=pantalones" class="text-[14px] hover:text-acento">Pantalones</a>
+      <a href="catalogo.html?cat=accesorios" class="text-[14px] hover:text-acento">Accesorios</a>
+    </nav>
+
+    <!-- Columna 3: enlaces legales (en el prototipo apuntan a "#"
+         porque esas páginas aún no forman parte del encargo) -->
+    <nav aria-label="Legal" class="flex flex-col gap-2.5">
+      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Legal</h2>
+      <a href="#" class="text-[14px] hover:text-acento">Términos y condiciones</a>
+      <a href="#" class="text-[14px] hover:text-acento">Política de privacidad</a>
+      <a href="#" class="text-[14px] hover:text-acento">Sobre la marca</a>
+    </nav>
+
+    <!-- Columna 4: contacto. <address> es la etiqueta HTML pensada
+         justo para esto (datos de contacto), buena señal para el SEO -->
+    <div class="flex flex-col gap-2.5">
+      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Contacto</h2>
+      <address class="flex flex-col gap-2.5 not-italic">
+        <p class="text-[14px] leading-relaxed">12 Rue de la Lumière<br>75008 París, Francia</p>
+        <a href="mailto:contact@maisonlumiere.example" class="text-[14px] hover:text-acento">contact@maisonlumiere.example</a>
+        <a href="tel:+33100000000" class="text-[14px] tabular-nums hover:text-acento">+33 1 00 00 00 00</a>
+      </address>
+    </div>
+  </div>
+
+  <!-- Línea final con el copyright -->
+  <div class="contenedor flex flex-col gap-2 border-t border-tinta/20 py-6 text-[13px] text-tinta/60 sm:flex-row sm:justify-between">
+    <p>© 2026 Maison Lumière. Todos los derechos reservados.</p>
+    <p>Hecho en Francia · Prototipo académico — 4Geeks Academy</p>
+  </div>
+</footer>
+
+<!-- Datos estructurados Schema.org (SEO): describen la empresa en un
+     formato que los buscadores leen directamente. No se ve en pantalla. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Maison Lumière",
+  "url": "https://maisonlumiere.example/",
+  "logo": "https://maisonlumiere.example/assets/img/logo.svg",
+  "description": "Marca francesa de moda: prêt-à-porter, calzado y accesorios confeccionados en Francia desde 1998.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "12 Rue de la Lumière",
+    "postalCode": "75008",
+    "addressLocality": "París",
+    "addressCountry": "FR"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+33-1-00-00-00-00",
+    "contactType": "customer service",
+    "email": "contact@maisonlumiere.example"
+  }
+}
+</script>
+<!-- END footer (canónico) -->
