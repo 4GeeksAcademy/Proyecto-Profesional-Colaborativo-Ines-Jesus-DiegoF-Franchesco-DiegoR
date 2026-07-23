@@ -1,0 +1,158 @@
+/* ════════════════════════════════════════════════════════════════════
+   src/input.css — LA FUENTE DE ESTILOS DEL PROYECTO (Tailwind CSS v4)
+
+   ¿Qué es este archivo?
+   Aquí se define la identidad visual de Maison Lumière: colores,
+   tipografía y los pocos "componentes" reutilizables (botones, campos
+   de formulario...). Tailwind lo lee, escanea los HTML del proyecto y
+   genera css/styles.css con SOLO las clases que realmente se usan.
+
+   ¿De dónde sale este diseño?
+   Es la fusión de los dos prototipos del equipo:
+   · maison-lumiere    -> aportó la base técnica (Tailwind + tokens)
+   · maison-lumiere-v2 -> aportó la estética "Modernist": tipografía
+     Archivo, rojo intenso, fotos en blanco y negro y esquinas rectas.
+
+   Para recompilar después de un cambio:  sh build.sh
+   ════════════════════════════════════════════════════════════════════ */
+
+@import "tailwindcss";
+
+/* Rutas que Tailwind escanea para saber qué clases conservar.
+   (Relativas a este archivo, que vive en src/) */
+@source "../*.html";
+@source "../partials/*.html";
+
+/* ------------------------------------------------------------------ */
+/* TOKENS DE MARCA — la paleta y tipografía oficiales                  */
+/* En Tailwind v4 cada token genera utilidades automáticamente:        */
+/*   --color-crudo  -> bg-crudo, text-crudo, border-crudo, ...         */
+/*   --color-acento -> bg-acento, text-acento, ...                     */
+/* Así todas las páginas usan EXACTAMENTE los mismos colores.          */
+/* ------------------------------------------------------------------ */
+@theme {
+  /* Fondos y texto */
+  --color-crudo:         #f3f2f2;  /* gris cálido muy claro — fondo general */
+  --color-superficie:    #eae9e9;  /* un punto más oscuro — fondos de fotos y campos */
+  --color-tinta:         #201e1d;  /* casi negro — texto principal */
+
+  /* La familia del rojo Maison Lumière */
+  --color-acento:        #ec3013;  /* rojo de marca — titulares y detalles grandes */
+  --color-acento-fuerte: #dd2b0f;  /* rojo botón — fondo de botones (contraste AA con texto blanco) */
+  --color-acento-oscuro: #ae1800;  /* rojo profundo — texto pequeño sobre fondo claro (accesible) */
+  --color-acento-claro:  #fff2ef;  /* rojo casi blanco — fondo de etiquetas "Nuevo" */
+  --color-acento-noche:  #7c1405;  /* rojo vino — texto sobre acento-claro */
+
+  /* Neutros de apoyo (etiquetas, texto secundario) */
+  --color-humo:          #f8f4f4;
+  --color-grafito:       #444141;
+
+  /* Tipografía: "Archivo" (Google Fonts) para todo, con system-ui de
+     reserva por si la fuente aún no ha cargado. */
+  --font-sans: "Archivo", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ------------------------------------------------------------------ */
+/* BASE — reglas que aplican a toda la página                          */
+/* ------------------------------------------------------------------ */
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+  /* El lienzo por defecto: fondo crudo, texto tinta, fuente Archivo */
+  body { @apply bg-crudo font-sans text-[15px] leading-[1.55] text-tinta antialiased; }
+
+  /* Los titulares del sistema "Modernist": Archivo en negrita máxima,
+     interlineado corto y letras ligeramente juntas */
+  h1, h2, h3, h4 { @apply font-extrabold leading-[1.12] tracking-[-0.015em]; }
+
+  /* Detalles de calidad tipográfica: evita líneas huérfanas feas */
+  h1, h2 { text-wrap: balance; }
+  p, li  { text-wrap: pretty; }
+
+  /* Accesibilidad: al navegar con teclado (tecla Tab) se dibuja un
+     contorno rojo visible alrededor del elemento enfocado */
+  :focus-visible { @apply outline-2 outline-offset-2 outline-acento; }
+
+  /* El texto seleccionado con el ratón se tiñe del rojo de la marca */
+  ::selection { background: color-mix(in srgb, #ec3013 30%, transparent); }
+
+  /* El enlace de la página activa en la navegación se pinta de rojo
+     (cada página marca el suyo con el atributo aria-current="page") */
+  a[aria-current="page"] { @apply text-acento-oscuro font-semibold; }
+
+  /* Oculta la flechita nativa de <summary> (la usamos para el menú
+     móvil, que funciona sin JavaScript gracias a <details>) */
+  summary::-webkit-details-marker { display: none; }
+  summary { list-style: none; }
+}
+
+/* ------------------------------------------------------------------ */
+/* COMPONENTES — piezas que se repiten por todo el prototipo           */
+/* Definirlas una sola vez evita copiar listas larguísimas de clases   */
+/* ------------------------------------------------------------------ */
+@layer components {
+
+  /* Contenedor central: máx. 1200px, con margen lateral fluido
+     (20px en móvil y hasta 72px en pantallas grandes) */
+  .contenedor { @apply mx-auto w-full max-w-[1200px] px-[clamp(20px,5vw,72px)]; }
+
+  /* La "ceja" de sección: texto pequeño en mayúsculas y rojo accesible
+     que anuncia cada bloque (p. ej. "CATÁLOGO", "TU PEDIDO") */
+  .etiqueta-seccion { @apply block text-[13px] uppercase tracking-[0.08em] text-acento-oscuro; }
+
+  /* Línea divisoria gruesa característica del diseño Modernist */
+  .separador { @apply h-[2px] border-0 bg-tinta/40; }
+
+  /* ---- Botones (tres niveles de importancia) ----
+     En el HTML se combinan: class="btn btn-primario", etc. */
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2
+           text-[15px] font-extrabold leading-tight
+           px-5 py-3 transition-colors;
+  }
+  /* Principal: rojo sólido — la acción más importante de la pantalla */
+  .btn-primario   { @apply bg-acento-fuerte text-white hover:bg-acento-oscuro; }
+  /* Secundario: solo borde — acciones de apoyo */
+  .btn-secundario { @apply border border-tinta/40 text-tinta hover:bg-tinta/5; }
+  /* Fantasma: solo texto rojo — enlaces con aspecto de acción */
+  .btn-fantasma   { @apply px-2 text-acento-oscuro hover:bg-acento/10; }
+
+  /* ---- Formularios ---- */
+  /* Etiqueta pequeña encima de cada campo */
+  .etiqueta-campo { @apply mb-1.5 block text-[13px] text-tinta/70; }
+  /* Campo de texto: fondo superficie, borde fino, esquinas rectas */
+  .campo {
+    @apply w-full border border-tinta/40 bg-superficie px-3 py-2.5
+           text-[15px] text-tinta placeholder:text-tinta/45
+           hover:border-tinta/60 focus:border-acento focus:outline-none
+           focus-visible:outline-2 focus-visible:outline-acento;
+  }
+
+  /* ---- Selector segmentado (filtros y tallas) ----
+     Es un grupo de <label> pegados con un <input type="radio"> oculto
+     dentro. Al marcar una opción, CSS la pinta de rojo con :has().
+     Todo sin una sola línea de JavaScript. */
+  .segmento { @apply inline-flex flex-wrap border border-tinta/40; }
+  .segmento-opcion {
+    @apply inline-flex cursor-pointer items-center justify-center gap-1.5
+           px-3 py-2 text-[13px];
+  }
+  /* Línea separadora entre una opción y la siguiente */
+  .segmento-opcion + .segmento-opcion { border-left: 1px solid color-mix(in srgb, #201e1d 40%, transparent); }
+  .segmento-opcion:has(input:checked) { @apply bg-acento-fuerte text-white; }
+  .segmento-opcion:not(:has(input:checked)):hover { @apply bg-tinta/5; }
+  .segmento-opcion:has(input:focus-visible) { @apply outline-2 -outline-offset-2 outline-acento; }
+  /* El radio real queda oculto pero sigue funcionando con el teclado */
+  .segmento-opcion input { @apply pointer-events-none absolute h-0 w-0 opacity-0; }
+
+  /* ---- Etiquetas de producto ("Nuevo", "Más vendido") ----
+     En el HTML se combinan: class="etiqueta etiqueta-roja", etc. */
+  .etiqueta        { @apply inline-flex items-center px-2.5 py-[3px] text-[11px] tracking-[0.02em] whitespace-nowrap; }
+  .etiqueta-roja   { @apply bg-acento-claro text-acento-noche; }
+  .etiqueta-neutra { @apply bg-humo text-grafito; }
+
+  /* ---- Foto de producto ----
+     Todas las fotos del prototipo se muestran en blanco y negro con un
+     pelín más de contraste: es la firma visual de la marca. */
+  .foto-bn { @apply h-full w-full object-cover grayscale contrast-[1.08]; }
+}
