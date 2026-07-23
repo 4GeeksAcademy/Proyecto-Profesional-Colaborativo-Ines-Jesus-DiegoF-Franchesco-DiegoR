@@ -1,0 +1,697 @@
+<!doctype html>
+<!-- ════════════════════════════════════════════════════════════════════
+     VISTA 2 de 5: CATÁLOGO (catalogo.html) · Maison Lumière
+     ────────────────────────────────────────────────────────────────────
+     ¿Qué es esta página?
+     El escaparate completo de la tienda: las 20 piezas de la colección.
+
+     Requisitos del encargo que cumple:
+     · Mantiene la misma navbar y footer que el resto de vistas.
+     · Barra de filtros ANTES del listado: por categoría y por talla.
+     · Cuadrícula de productos 4×5: en escritorio se ven 4 columnas
+       por 5 filas = 20 productos de referencia.
+
+     ¿Cómo funcionan los filtros sin JavaScript?
+     Son un formulario HTML de verdad: al pulsar "Aplicar" se envían a
+     esta misma página como parámetros en la dirección (?cat=...&talla=...).
+     En el prototipo sirven para enseñar la interfaz; al pasar a
+     desarrollo, el servidor leería esos parámetros y filtraría la lista.
+
+     La cuadrícula es responsive: 2 columnas en móvil, 3 en tablet
+     y 4 en escritorio.
+     ════════════════════════════════════════════════════════════════════ -->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SEO: título y descripción únicos de esta página -->
+  <title>Catálogo — calzado, camisas, pantalones y accesorios | Maison Lumière</title>
+  <meta name="description" content="Las 20 piezas esenciales de Maison Lumière: calzado, camisas, pantalones y accesorios confeccionados en Francia. Filtra por categoría y talla.">
+
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#f3f2f2">
+
+  <!-- SEO social (Open Graph) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Maison Lumière">
+  <meta property="og:title" content="Catálogo | Maison Lumière">
+  <meta property="og:description" content="Las 20 piezas esenciales de la colección Otoño 2026, confeccionadas en Francia.">
+  <meta property="og:image" content="https://maisonlumiere.example/assets/photos/hero.jpg">
+  <meta property="og:locale" content="es_ES">
+
+  <!-- Tipografía Archivo + CSS compilado de Tailwind -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- SEO: datos estructurados Schema.org con la lista de productos.
+       Google los usa para entender que esto es un catálogo. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Catálogo Maison Lumière — Colección Otoño 2026",
+    "numberOfItems": 20,
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Derby « Rive Gauche »", "url": "https://maisonlumiere.example/producto.html?id=derby-rive-gauche" },
+      { "@type": "ListItem", "position": 2, "name": "Mocasín « Saint-Germain »", "url": "https://maisonlumiere.example/producto.html?id=mocasin-saint-germain" },
+      { "@type": "ListItem", "position": 3, "name": "Bota Chelsea « Marais »", "url": "https://maisonlumiere.example/producto.html?id=chelsea-marais" },
+      { "@type": "ListItem", "position": 4, "name": "Zapatilla Piel « Auteuil »", "url": "https://maisonlumiere.example/producto.html?id=zapatilla-auteuil" },
+      { "@type": "ListItem", "position": 5, "name": "Derby Ante « Odéon »", "url": "https://maisonlumiere.example/producto.html?id=derby-ante-odeon" },
+      { "@type": "ListItem", "position": 6, "name": "Camisa Oxford « Lumière »", "url": "https://maisonlumiere.example/producto.html?id=oxford-lumiere" },
+      { "@type": "ListItem", "position": 7, "name": "Camisa Lino « Provence »", "url": "https://maisonlumiere.example/producto.html?id=lino-provence" },
+      { "@type": "ListItem", "position": 8, "name": "Camisa Popelina « Rivoli »", "url": "https://maisonlumiere.example/producto.html?id=popelina-rivoli" },
+      { "@type": "ListItem", "position": 9, "name": "Camisa Franela « Montmartre »", "url": "https://maisonlumiere.example/producto.html?id=franela-montmartre" },
+      { "@type": "ListItem", "position": 10, "name": "Camisa Cuello Mao « Sully »", "url": "https://maisonlumiere.example/producto.html?id=mao-sully" },
+      { "@type": "ListItem", "position": 11, "name": "Pantalón Sastre « Vendôme »", "url": "https://maisonlumiere.example/producto.html?id=sastre-vendome" },
+      { "@type": "ListItem", "position": 12, "name": "Vaquero « Belleville »", "url": "https://maisonlumiere.example/producto.html?id=vaquero-belleville" },
+      { "@type": "ListItem", "position": 13, "name": "Chino « Luxembourg »", "url": "https://maisonlumiere.example/producto.html?id=chino-luxembourg" },
+      { "@type": "ListItem", "position": 14, "name": "Pantalón Franela « Palais »", "url": "https://maisonlumiere.example/producto.html?id=franela-palais" },
+      { "@type": "ListItem", "position": 15, "name": "Pantalón Lino « Camargue »", "url": "https://maisonlumiere.example/producto.html?id=lino-camargue" },
+      { "@type": "ListItem", "position": 16, "name": "Bufanda Cachemir « Alpine »", "url": "https://maisonlumiere.example/producto.html?id=bufanda-alpine" },
+      { "@type": "ListItem", "position": 17, "name": "Cinturón Cuero « Bastille »", "url": "https://maisonlumiere.example/producto.html?id=cinturon-bastille" },
+      { "@type": "ListItem", "position": 18, "name": "Cartera Piel « Concorde »", "url": "https://maisonlumiere.example/producto.html?id=cartera-concorde" },
+      { "@type": "ListItem", "position": 19, "name": "Gorro Lana « Montagne »", "url": "https://maisonlumiere.example/producto.html?id=gorro-montagne" },
+      { "@type": "ListItem", "position": 20, "name": "Guantes Cuero « Opéra »", "url": "https://maisonlumiere.example/producto.html?id=guantes-opera" }
+    ]
+  }
+  </script>
+</head>
+
+<body class="flex min-h-screen flex-col">
+
+<!-- BEGIN navbar (canónico) -->
+
+<!-- Enlace de accesibilidad: invisible salvo que se navegue con la
+     tecla Tab; permite saltar directo al contenido principal -->
+<a href="#contenido"
+   class="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:bg-tinta focus:px-4 focus:py-2 focus:text-crudo">
+  Saltar al contenido
+</a>
+
+<!-- Barra de promoción: mensaje comercial fijo en todas las vistas -->
+<p class="border-b border-tinta/20 bg-crudo px-[clamp(20px,5vw,72px)] py-2 text-[13px] uppercase tracking-[0.08em] text-tinta/70">
+  Envío gratuito a partir de 150 € — devoluciones en 30 días
+</p>
+
+<header class="border-b-2 border-tinta/40 bg-crudo">
+  <div class="contenedor flex items-center gap-6 py-3.5">
+
+    <!-- Logo: monograma ML dibujado en SVG + nombre de la marca.
+         mr-auto empuja el resto de la barra hacia la derecha -->
+    <a href="index.html" class="mr-auto flex items-center gap-3" aria-label="Maison Lumière, ir al inicio">
+      <svg width="26" height="26" viewBox="0 0 48 48" aria-hidden="true" fill="none"
+           stroke="var(--color-acento)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
+        <path d="M8 34 L8 14 L16 26 L24 14 L24 34"/>
+        <path d="M30 14 L30 34 L40 34"/>
+      </svg>
+      <span class="text-[15px] font-extrabold uppercase tracking-[0.14em]">Maison Lumière</span>
+    </a>
+
+    <!-- Buscador (visible solo en escritorio; en móvil va dentro del menú) -->
+    <form role="search" action="catalogo.html" method="get" class="hidden lg:block">
+      <label for="buscador" class="sr-only">Buscar productos</label>
+      <input id="buscador" name="q" type="search" placeholder="Buscar en el catálogo" class="campo w-[220px] py-2">
+    </form>
+
+    <!-- Navegación principal + menú de cuenta (escritorio) -->
+    <nav aria-label="Principal" class="hidden items-center gap-6 text-[14px] lg:flex">
+      <a data-nav="inicio" href="index.html" class="hover:text-acento">Inicio</a>
+      <a data-nav="catalogo" aria-current="page" href="catalogo.html" class="hover:text-acento">Catálogo</a>
+      <a href="#" class="flex items-center gap-1.5 hover:text-acento" title="Tu cuenta (maqueta sin funcionalidad)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="square" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+        </svg>
+        Cuenta
+      </a>
+    </nav>
+
+    <!-- Carrito: visible SIEMPRE (móvil y escritorio), con contador
+         de artículos. El "4" es el estado de ejemplo del prototipo:
+         coincide con las unidades de la vista carrito.html -->
+    <a data-nav="carrito" href="carrito.html" class="flex items-center gap-2 text-[14px] hover:text-acento"
+       aria-label="Carrito, 4 artículos">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+        <path d="M3 6h18"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      <span class="hidden sm:inline">Carrito</span>
+      <span aria-hidden="true"
+            class="inline-flex h-[18px] min-w-[18px] items-center justify-center bg-acento-fuerte px-1 text-[11px] font-semibold tabular-nums text-white">4</span>
+    </a>
+
+    <!-- Menú móvil: <details> abre y cierra el panel sin JavaScript -->
+    <details class="relative lg:hidden">
+      <summary class="cursor-pointer p-2" aria-label="Abrir menú de navegación">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="square" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </summary>
+      <div class="absolute right-0 z-40 mt-3 w-64 border-2 border-tinta/40 bg-crudo p-5 shadow-lg">
+        <form role="search" action="catalogo.html" method="get" class="mb-4">
+          <label for="buscador-movil" class="sr-only">Buscar productos</label>
+          <input id="buscador-movil" name="q" type="search" placeholder="Buscar…" class="campo py-2">
+        </form>
+        <nav aria-label="Principal (móvil)" class="flex flex-col gap-4 text-[14px]">
+          <a data-nav="inicio" href="index.html" class="hover:text-acento">Inicio</a>
+          <a data-nav="catalogo" aria-current="page" href="catalogo.html" class="hover:text-acento">Catálogo</a>
+          <a data-nav="carrito" href="carrito.html" class="hover:text-acento">Carrito</a>
+          <a href="#" class="hover:text-acento">Cuenta</a>
+        </nav>
+      </div>
+    </details>
+  </div>
+</header>
+<!-- END navbar (canónico) -->
+
+  <main id="contenido" class="flex-1">
+    <div class="contenedor">
+
+      <!-- ════════════════ CABECERA DEL CATÁLOGO ════════════════ -->
+      <section class="pb-8 pt-14">
+        <span class="etiqueta-seccion mb-3.5">Colección Otoño 2026</span>
+        <div class="flex flex-wrap items-baseline justify-between gap-4">
+          <h1 class="ml-[-0.05em] text-[clamp(36px,4.4vw,64px)] leading-[1.06] tracking-[-0.02em]">Catálogo</h1>
+          <p class="text-[15px] tabular-nums text-tinta/70">20 piezas</p>
+        </div>
+      </section>
+
+      <!-- ════════════════ BARRA DE FILTROS (requisito) ════════════════
+           Va ANTES del listado. Permite filtrar por categoría (grupo de
+           botones) y por talla (desplegable). Es un formulario real. -->
+      <form action="catalogo.html" method="get" aria-label="Filtrar el catálogo"
+            class="flex flex-wrap items-end gap-x-8 gap-y-5 border-y-2 border-tinta/40 py-5">
+
+        <!-- Filtro 1: categoría. Radios ocultos dentro de etiquetas:
+             la opción marcada se pinta de rojo solo con CSS (:has) -->
+        <div>
+          <span class="etiqueta-campo" id="filtro-cat-titulo">Categoría</span>
+          <div class="segmento" role="radiogroup" aria-labelledby="filtro-cat-titulo">
+            <label class="segmento-opcion"><input type="radio" name="cat" value="todo" checked>Todo</label>
+            <label class="segmento-opcion"><input type="radio" name="cat" value="calzado">Calzado</label>
+            <label class="segmento-opcion"><input type="radio" name="cat" value="camisas">Camisas</label>
+            <label class="segmento-opcion"><input type="radio" name="cat" value="pantalones">Pantalones</label>
+            <label class="segmento-opcion"><input type="radio" name="cat" value="accesorios">Accesorios</label>
+          </div>
+        </div>
+
+        <!-- Filtro 2: talla (requisito). Un <select> nativo con las
+             tallas de ropa y las numéricas de calzado/pantalón -->
+        <div>
+          <label class="etiqueta-campo" for="filtro-talla">Talla</label>
+          <select id="filtro-talla" name="talla" class="campo w-40 py-2">
+            <option value="" selected>Todas</option>
+            <optgroup label="Ropa">
+              <option>S</option><option>M</option><option>L</option><option>XL</option>
+            </optgroup>
+            <optgroup label="Calzado">
+              <option>40</option><option>41</option><option>42</option><option>43</option><option>44</option><option>45</option>
+            </optgroup>
+            <optgroup label="Pantalón">
+              <option>44</option><option>46</option><option>48</option><option>50</option><option>52</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <!-- Extra: ordenar resultados, habitual en cualquier e-commerce -->
+        <div>
+          <label class="etiqueta-campo" for="filtro-orden">Ordenar por</label>
+          <select id="filtro-orden" name="orden" class="campo w-40 py-2">
+            <option value="novedades" selected>Novedades</option>
+            <option value="precio-asc">Precio: menor a mayor</option>
+            <option value="precio-desc">Precio: mayor a menor</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-secundario">Aplicar filtros</button>
+      </form>
+
+      <!-- ════════════════ CUADRÍCULA DE PRODUCTOS 4×5 ════════════════
+           20 productos. grid-cols-2 en móvil, 3 en tablet (md:) y
+           4 en escritorio (lg:) → 4 columnas × 5 filas (requisito).
+           Cada tarjeta es un <article> con su foto, nombre (h2),
+           precio, categoría y etiqueta, y enlaza a la vista producto. -->
+      <section aria-label="Productos del catálogo" class="py-10 pb-20">
+        <ul class="grid grid-cols-2 gap-x-[clamp(20px,2.5vw,32px)] gap-y-10 md:grid-cols-3 lg:grid-cols-4">
+          <!-- Producto 01 · Derby « Rive Gauche » (Calzado) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=derby-rive-gauche" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/derby.jpg" alt="Derby « Rive Gauche », calzado de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] object-left transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Derby « Rive Gauche »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">420,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                <span class="etiqueta etiqueta-roja">Nuevo</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 02 · Mocasín « Saint-Germain » (Calzado) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=mocasin-saint-germain" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/mocasin.jpg" alt="Mocasín « Saint-Germain », calzado de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Mocasín « Saint-Germain »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">380,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                <span class="etiqueta etiqueta-neutra">Más vendido</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 03 · Bota Chelsea « Marais » (Calzado) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=chelsea-marais" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/derby.jpg" alt="Bota Chelsea « Marais », calzado de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] object-left transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Bota Chelsea « Marais »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">460,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 04 · Zapatilla Piel « Auteuil » (Calzado) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=zapatilla-auteuil" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/mocasin.jpg" alt="Zapatilla Piel « Auteuil », calzado de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Zapatilla Piel « Auteuil »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">290,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 05 · Derby Ante « Odéon » (Calzado) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=derby-ante-odeon" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/derby.jpg" alt="Derby Ante « Odéon », calzado de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] object-left transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Derby Ante « Odéon »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">440,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 06 · Camisa Oxford « Lumière » (Camisas) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=oxford-lumiere" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/oxford.jpg" alt="Camisa Oxford « Lumière », camisas de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Camisa Oxford « Lumière »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">160,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                <span class="etiqueta etiqueta-roja">Nuevo</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 07 · Camisa Lino « Provence » (Camisas) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=lino-provence" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/lino.jpg" alt="Camisa Lino « Provence », camisas de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Camisa Lino « Provence »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">180,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                <span class="etiqueta etiqueta-neutra">Más vendido</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 08 · Camisa Popelina « Rivoli » (Camisas) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=popelina-rivoli" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/camisas-cat.jpg" alt="Camisa Popelina « Rivoli », camisas de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Camisa Popelina « Rivoli »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">170,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 09 · Camisa Franela « Montmartre » (Camisas) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=franela-montmartre" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/oxford.jpg" alt="Camisa Franela « Montmartre », camisas de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Camisa Franela « Montmartre »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">175,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 10 · Camisa Cuello Mao « Sully » (Camisas) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=mao-sully" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/lino.jpg" alt="Camisa Cuello Mao « Sully », camisas de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Camisa Cuello Mao « Sully »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">165,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 11 · Pantalón Sastre « Vendôme » (Pantalones) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=sastre-vendome" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/vendome.jpg" alt="Pantalón Sastre « Vendôme », pantalones de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Pantalón Sastre « Vendôme »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">260,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                <span class="etiqueta etiqueta-roja">Nuevo</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 12 · Vaquero « Belleville » (Pantalones) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=vaquero-belleville" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/vaquero.jpg" alt="Vaquero « Belleville », pantalones de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Vaquero « Belleville »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">190,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                <span class="etiqueta etiqueta-neutra">Más vendido</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 13 · Chino « Luxembourg » (Pantalones) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=chino-luxembourg" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/vendome.jpg" alt="Chino « Luxembourg », pantalones de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Chino « Luxembourg »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">185,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 14 · Pantalón Franela « Palais » (Pantalones) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=franela-palais" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/vendome.jpg" alt="Pantalón Franela « Palais », pantalones de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Pantalón Franela « Palais »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">240,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 15 · Pantalón Lino « Camargue » (Pantalones) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=lino-camargue" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/vaquero.jpg" alt="Pantalón Lino « Camargue », pantalones de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Pantalón Lino « Camargue »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">195,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 16 · Bufanda Cachemir « Alpine » (Accesorios) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=bufanda-alpine" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/alpine.jpg" alt="Bufanda Cachemir « Alpine », accesorios de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Bufanda Cachemir « Alpine »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">210,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                <span class="etiqueta etiqueta-roja">Nuevo</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 17 · Cinturón Cuero « Bastille » (Accesorios) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=cinturon-bastille" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/cinturon.jpg" alt="Cinturón Cuero « Bastille », accesorios de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Cinturón Cuero « Bastille »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">130,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                <span class="etiqueta etiqueta-neutra">Más vendido</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 18 · Cartera Piel « Concorde » (Accesorios) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=cartera-concorde" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/cinturon.jpg" alt="Cartera Piel « Concorde », accesorios de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Cartera Piel « Concorde »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">150,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 19 · Gorro Lana « Montagne » (Accesorios) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=gorro-montagne" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/alpine.jpg" alt="Gorro Lana « Montagne », accesorios de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Gorro Lana « Montagne »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">95,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                </div>
+              </a>
+            </article>
+          </li>
+          <!-- Producto 20 · Guantes Cuero « Opéra » (Accesorios) -->
+          <li>
+            <article class="group">
+              <a href="producto.html?id=guantes-opera" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/cinturon.jpg" alt="Guantes Cuero « Opéra », accesorios de Maison Lumière" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h2 class="text-[17px] font-extrabold leading-tight group-hover:text-acento">Guantes Cuero « Opéra »</h2>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">145,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                </div>
+              </a>
+            </article>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+<!-- BEGIN footer (canónico) -->
+<footer class="mt-20 border-t-2 border-tinta/40 bg-crudo">
+  <div class="contenedor grid grid-cols-1 gap-x-[clamp(24px,3vw,48px)] gap-y-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+
+    <!-- Columna 1: la marca -->
+    <div>
+      <svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true" fill="none"
+           stroke="var(--color-acento)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
+        <path d="M8 34 L8 14 L16 26 L24 14 L24 34"/>
+        <path d="M30 14 L30 34 L40 34"/>
+      </svg>
+      <p class="mt-4 max-w-[26ch] text-[14px] leading-relaxed text-tinta/75">
+        Prêt-à-porter hecho en Francia desde 1998. París, Rue de la Lumière 12.
+      </p>
+    </div>
+
+    <!-- Columna 2: categorías de la tienda (los enlaces llevan a la
+         vista catálogo; ?cat= indica la categoría preseleccionada) -->
+    <nav aria-label="Categorías" class="flex flex-col gap-2.5">
+      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Categorías</h2>
+      <a href="catalogo.html?cat=calzado" class="text-[14px] hover:text-acento">Calzado</a>
+      <a href="catalogo.html?cat=camisas" class="text-[14px] hover:text-acento">Camisas</a>
+      <a href="catalogo.html?cat=pantalones" class="text-[14px] hover:text-acento">Pantalones</a>
+      <a href="catalogo.html?cat=accesorios" class="text-[14px] hover:text-acento">Accesorios</a>
+    </nav>
+
+    <!-- Columna 3: enlaces legales (en el prototipo apuntan a "#"
+         porque esas páginas aún no forman parte del encargo) -->
+    <nav aria-label="Legal" class="flex flex-col gap-2.5">
+      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Legal</h2>
+      <a href="#" class="text-[14px] hover:text-acento">Términos y condiciones</a>
+      <a href="#" class="text-[14px] hover:text-acento">Política de privacidad</a>
+      <a href="#" class="text-[14px] hover:text-acento">Sobre la marca</a>
+    </nav>
+
+    <!-- Columna 4: contacto. <address> es la etiqueta HTML pensada
+         justo para esto (datos de contacto), buena señal para el SEO -->
+    <div class="flex flex-col gap-2.5">
+      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Contacto</h2>
+      <address class="flex flex-col gap-2.5 not-italic">
+        <p class="text-[14px] leading-relaxed">12 Rue de la Lumière<br>75008 París, Francia</p>
+        <a href="mailto:contact@maisonlumiere.example" class="text-[14px] hover:text-acento">contact@maisonlumiere.example</a>
+        <a href="tel:+33100000000" class="text-[14px] tabular-nums hover:text-acento">+33 1 00 00 00 00</a>
+      </address>
+    </div>
+  </div>
+
+  <!-- Línea final con el copyright -->
+  <div class="contenedor flex flex-col gap-2 border-t border-tinta/20 py-6 text-[13px] text-tinta/60 sm:flex-row sm:justify-between">
+    <p>© 2026 Maison Lumière. Todos los derechos reservados.</p>
+    <p>Hecho en Francia · Prototipo académico — 4Geeks Academy</p>
+  </div>
+</footer>
+
+<!-- Datos estructurados Schema.org (SEO): describen la empresa en un
+     formato que los buscadores leen directamente. No se ve en pantalla. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Maison Lumière",
+  "url": "https://maisonlumiere.example/",
+  "logo": "https://maisonlumiere.example/assets/img/logo.svg",
+  "description": "Marca francesa de moda: prêt-à-porter, calzado y accesorios confeccionados en Francia desde 1998.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "12 Rue de la Lumière",
+    "postalCode": "75008",
+    "addressLocality": "París",
+    "addressCountry": "FR"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+33-1-00-00-00-00",
+    "contactType": "customer service",
+    "email": "contact@maisonlumiere.example"
+  }
+}
+</script>
+<!-- END footer (canónico) -->
+
+</body>
+</html>

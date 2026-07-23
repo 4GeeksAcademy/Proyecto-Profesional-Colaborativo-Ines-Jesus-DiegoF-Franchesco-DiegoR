@@ -1,0 +1,457 @@
+<!doctype html>
+<!-- ════════════════════════════════════════════════════════════════════
+     VISTA 3 de 5: PRODUCTO (producto.html) · Maison Lumière
+     ────────────────────────────────────────────────────────────────────
+     ¿Qué es esta página?
+     La ficha de un producto. En el prototipo se muestra un artículo
+     de referencia (el Derby « Rive Gauche »); en la web real habría
+     una ficha como esta por cada pieza del catálogo.
+
+     Requisitos del encargo que cumple:
+     · Disposición a dos columnas: foto a la izquierda (≈ mitad del
+       ancho) e información principal a la derecha.
+     · La columna de información incluye: nombre, código de referencia,
+       talla, precio, selector de cantidad y botón "Añadir al carrito".
+     · Debajo, una sección de descripción detallada con los materiales
+       y los usos/escenarios recomendados.
+
+     Detalle sin JavaScript: la talla y la cantidad viven dentro de un
+     formulario cuyo botón de envío es "Añadir al carrito", que lleva a
+     la vista carrito. En desarrollo real ese formulario haría el alta
+     del artículo en el carrito del usuario.
+     ════════════════════════════════════════════════════════════════════ -->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SEO: título y descripción únicos, con nombre y precio del producto -->
+  <title>Derby « Rive Gauche » — calzado de cuero, 420 € | Maison Lumière</title>
+  <meta name="description" content="Derby de cuero de becerro con construcción Blake y suela de cuero, confeccionado en Romans-sur-Isère. Un clásico del vestidor parisino. Envío gratuito.">
+
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#f3f2f2">
+
+  <!-- SEO social (Open Graph de tipo producto) -->
+  <meta property="og:type" content="product">
+  <meta property="og:site_name" content="Maison Lumière">
+  <meta property="og:title" content="Derby « Rive Gauche » | Maison Lumière">
+  <meta property="og:description" content="Derby de cuero de becerro con construcción Blake. Confeccionado en Francia. 420 €.">
+  <meta property="og:image" content="https://maisonlumiere.example/assets/photos/derby.jpg">
+  <meta property="og:locale" content="es_ES">
+
+  <!-- Tipografía Archivo + CSS compilado de Tailwind -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- SEO: datos estructurados Schema.org del producto. Con esto,
+       Google puede mostrar el precio y la disponibilidad directamente
+       en los resultados de búsqueda (resultados enriquecidos). -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Derby « Rive Gauche »",
+    "sku": "ML-CAL-001",
+    "image": "https://maisonlumiere.example/assets/photos/derby.jpg",
+    "description": "Derby de cuero de becerro con construcción Blake y suela de cuero. Un clásico del vestidor parisino, sin ornamento.",
+    "material": "Cuero de becerro, curtido vegetal",
+    "category": "Calzado",
+    "brand": { "@type": "Brand", "name": "Maison Lumière" },
+    "offers": {
+      "@type": "Offer",
+      "url": "https://maisonlumiere.example/producto.html?id=derby-rive-gauche",
+      "priceCurrency": "EUR",
+      "price": "420.00",
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/NewCondition"
+    }
+  }
+  </script>
+
+  <!-- SEO: la "miga de pan" también en formato Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://maisonlumiere.example/index.html" },
+      { "@type": "ListItem", "position": 2, "name": "Calzado", "item": "https://maisonlumiere.example/catalogo.html?cat=calzado" },
+      { "@type": "ListItem", "position": 3, "name": "Derby « Rive Gauche »" }
+    ]
+  }
+  </script>
+</head>
+
+<body class="flex min-h-screen flex-col">
+
+<!-- BEGIN navbar (canónico) -->
+
+<!-- Enlace de accesibilidad: invisible salvo que se navegue con la
+     tecla Tab; permite saltar directo al contenido principal -->
+<a href="#contenido"
+   class="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:bg-tinta focus:px-4 focus:py-2 focus:text-crudo">
+  Saltar al contenido
+</a>
+
+<!-- Barra de promoción: mensaje comercial fijo en todas las vistas -->
+<p class="border-b border-tinta/20 bg-crudo px-[clamp(20px,5vw,72px)] py-2 text-[13px] uppercase tracking-[0.08em] text-tinta/70">
+  Envío gratuito a partir de 150 € — devoluciones en 30 días
+</p>
+
+<header class="border-b-2 border-tinta/40 bg-crudo">
+  <div class="contenedor flex items-center gap-6 py-3.5">
+
+    <!-- Logo: monograma ML dibujado en SVG + nombre de la marca.
+         mr-auto empuja el resto de la barra hacia la derecha -->
+    <a href="index.html" class="mr-auto flex items-center gap-3" aria-label="Maison Lumière, ir al inicio">
+      <svg width="26" height="26" viewBox="0 0 48 48" aria-hidden="true" fill="none"
+           stroke="var(--color-acento)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
+        <path d="M8 34 L8 14 L16 26 L24 14 L24 34"/>
+        <path d="M30 14 L30 34 L40 34"/>
+      </svg>
+      <span class="text-[15px] font-extrabold uppercase tracking-[0.14em]">Maison Lumière</span>
+    </a>
+
+    <!-- Buscador (visible solo en escritorio; en móvil va dentro del menú) -->
+    <form role="search" action="catalogo.html" method="get" class="hidden lg:block">
+      <label for="buscador" class="sr-only">Buscar productos</label>
+      <input id="buscador" name="q" type="search" placeholder="Buscar en el catálogo" class="campo w-[220px] py-2">
+    </form>
+
+    <!-- Navegación principal + menú de cuenta (escritorio) -->
+    <nav aria-label="Principal" class="hidden items-center gap-6 text-[14px] lg:flex">
+      <a data-nav="inicio" href="index.html" class="hover:text-acento">Inicio</a>
+      <a data-nav="catalogo" href="catalogo.html" class="hover:text-acento">Catálogo</a>
+      <a href="#" class="flex items-center gap-1.5 hover:text-acento" title="Tu cuenta (maqueta sin funcionalidad)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="square" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+        </svg>
+        Cuenta
+      </a>
+    </nav>
+
+    <!-- Carrito: visible SIEMPRE (móvil y escritorio), con contador
+         de artículos. El "4" es el estado de ejemplo del prototipo:
+         coincide con las unidades de la vista carrito.html -->
+    <a data-nav="carrito" href="carrito.html" class="flex items-center gap-2 text-[14px] hover:text-acento"
+       aria-label="Carrito, 4 artículos">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+        <path d="M3 6h18"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      <span class="hidden sm:inline">Carrito</span>
+      <span aria-hidden="true"
+            class="inline-flex h-[18px] min-w-[18px] items-center justify-center bg-acento-fuerte px-1 text-[11px] font-semibold tabular-nums text-white">4</span>
+    </a>
+
+    <!-- Menú móvil: <details> abre y cierra el panel sin JavaScript -->
+    <details class="relative lg:hidden">
+      <summary class="cursor-pointer p-2" aria-label="Abrir menú de navegación">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="square" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </summary>
+      <div class="absolute right-0 z-40 mt-3 w-64 border-2 border-tinta/40 bg-crudo p-5 shadow-lg">
+        <form role="search" action="catalogo.html" method="get" class="mb-4">
+          <label for="buscador-movil" class="sr-only">Buscar productos</label>
+          <input id="buscador-movil" name="q" type="search" placeholder="Buscar…" class="campo py-2">
+        </form>
+        <nav aria-label="Principal (móvil)" class="flex flex-col gap-4 text-[14px]">
+          <a data-nav="inicio" href="index.html" class="hover:text-acento">Inicio</a>
+          <a data-nav="catalogo" href="catalogo.html" class="hover:text-acento">Catálogo</a>
+          <a data-nav="carrito" href="carrito.html" class="hover:text-acento">Carrito</a>
+          <a href="#" class="hover:text-acento">Cuenta</a>
+        </nav>
+      </div>
+    </details>
+  </div>
+</header>
+<!-- END navbar (canónico) -->
+
+  <main id="contenido" class="flex-1">
+    <div class="contenedor">
+
+      <!-- ════════════════ MIGA DE PAN ════════════════
+           Sitúa al cliente: Inicio / Categoría / Producto actual.
+           Además de orientar, es una señal clásica de buen SEO. -->
+      <nav aria-label="Miga de pan" class="flex flex-wrap gap-2.5 py-6 text-[13px] uppercase tracking-[0.08em] text-tinta/70">
+        <a href="index.html" class="hover:text-acento">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <a href="catalogo.html?cat=calzado" class="hover:text-acento">Calzado</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-tinta" aria-current="page">Derby « Rive Gauche »</span>
+      </nav>
+
+      <!-- ════════════════ FICHA A DOS COLUMNAS (requisito) ════════════════
+           En escritorio: fotos a la izquierda (≈50 %) e información a la
+           derecha. En móvil, las columnas se apilan una sobre otra. -->
+      <section class="grid gap-x-[clamp(32px,4vw,72px)] gap-y-12 pb-16 pt-2 md:grid-cols-2">
+
+        <!-- COLUMNA IZQUIERDA: la foto principal y dos detalles.
+             Los "detalles" reutilizan la misma foto con encuadres
+             distintos (object-position), práctica habitual en maquetas -->
+        <div class="flex flex-col gap-4">
+          <figure class="bg-superficie">
+            <img src="assets/photos/derby.jpg" alt="Derby « Rive Gauche » de cuero, vista lateral del par" width="800" height="1067"
+                 fetchpriority="high" decoding="async" class="foto-bn aspect-[3/4] object-left">
+          </figure>
+          <div class="grid grid-cols-2 gap-4">
+            <figure class="bg-superficie">
+              <img src="assets/photos/derby.jpg" alt="Detalle del empeine y los cordones del derby" width="600" height="600"
+                   loading="lazy" decoding="async" class="foto-bn aspect-square object-left-top">
+            </figure>
+            <figure class="bg-superficie">
+              <img src="assets/photos/derby.jpg" alt="Detalle de la suela de cuero cosida" width="600" height="600"
+                   loading="lazy" decoding="async" class="foto-bn aspect-square object-left-bottom">
+            </figure>
+          </div>
+        </div>
+
+        <!-- COLUMNA DERECHA: la información principal (requisito) -->
+        <div>
+          <!-- Categoría + etiqueta de novedad -->
+          <div class="mb-3.5 flex items-center gap-3">
+            <span class="text-[13px] uppercase tracking-[0.08em] text-acento-oscuro">Calzado</span>
+            <span class="etiqueta etiqueta-roja">Nuevo</span>
+          </div>
+
+          <!-- Nombre del producto -->
+          <h1 class="ml-[-0.04em] text-[clamp(30px,3.4vw,46px)] leading-[1.08] tracking-[-0.015em]">Derby « Rive Gauche »</h1>
+
+          <!-- Código o referencia del artículo (requisito) -->
+          <p class="mt-2 text-[13px] uppercase tracking-[0.08em] text-tinta/60">Ref. ML-CAL-001</p>
+
+          <!-- Precio -->
+          <p class="mt-5 text-[24px] font-extrabold tabular-nums">420,00 €</p>
+
+          <!-- Resumen del producto -->
+          <p class="mt-6 max-w-[52ch] text-[15.5px] leading-[1.75] text-tinta/80">
+            Derby de cuero de becerro con construcción Blake y suela de cuero.
+            Un clásico del vestidor parisino, sin ornamento.
+          </p>
+
+          <!-- Formulario de compra: talla + cantidad + añadir al carrito.
+               Sin JavaScript: el botón envía a la vista carrito. -->
+          <form action="carrito.html" method="get" class="mt-8">
+
+            <!-- Selector de talla (requisito). Radios ocultos: la talla
+                 elegida se resalta en rojo solo con CSS -->
+            <span class="etiqueta-campo" id="talla-titulo">Talla</span>
+            <div class="segmento" role="radiogroup" aria-labelledby="talla-titulo">
+              <label class="segmento-opcion min-w-11"><input type="radio" name="talla" value="40">40</label>
+              <label class="segmento-opcion min-w-11"><input type="radio" name="talla" value="41">41</label>
+              <label class="segmento-opcion min-w-11"><input type="radio" name="talla" value="42" checked>42</label>
+              <label class="segmento-opcion min-w-11"><input type="radio" name="talla" value="43">43</label>
+              <label class="segmento-opcion min-w-11"><input type="radio" name="talla" value="44">44</label>
+              <label class="segmento-opcion min-w-11"><input type="radio" name="talla" value="45">45</label>
+            </div>
+
+            <!-- Cantidad (requisito) + botón de añadir (requisito) -->
+            <div class="mt-6 flex flex-wrap items-end gap-3">
+              <div>
+                <label class="etiqueta-campo" for="cantidad">Cantidad</label>
+                <input id="cantidad" name="cantidad" type="number" value="1" min="1" max="9"
+                       class="campo w-24 tabular-nums">
+              </div>
+              <button type="submit" class="btn btn-primario h-[46px] px-7">Añadir al carrito — 420,00 €</button>
+            </div>
+          </form>
+
+          <!-- Datos rápidos: material, confección y envío -->
+          <div class="mt-10">
+            <div class="grid grid-cols-[120px_1fr] gap-4 border-t-2 border-tinta/40 py-4 sm:grid-cols-[140px_1fr]">
+              <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Material</p>
+              <p class="text-[14px]">Cuero de becerro, curtido vegetal</p>
+            </div>
+            <div class="grid grid-cols-[120px_1fr] gap-4 border-t border-tinta/20 py-4 sm:grid-cols-[140px_1fr]">
+              <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Confección</p>
+              <p class="text-[14px]">Romans-sur-Isère, Francia</p>
+            </div>
+            <div class="grid grid-cols-[120px_1fr] gap-4 border-y border-tinta/20 border-b-2 border-b-tinta/40 py-4 sm:grid-cols-[140px_1fr]">
+              <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Envío</p>
+              <p class="text-[14px]">Gratuito a partir de 150 €. Devoluciones sin coste durante 30 días.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════ DESCRIPCIÓN DETALLADA (requisito) ════════════════
+           Debajo de la ficha: los materiales al completo y los usos o
+           escenarios recomendados para llevar la pieza. -->
+      <section aria-labelledby="descripcion-titulo" class="border-t-2 border-tinta/40 pb-16 pt-10">
+        <span class="etiqueta-seccion mb-3.5">Descripción detallada</span>
+        <h2 id="descripcion-titulo" class="mb-10 text-[clamp(24px,2.6vw,34px)]">Hecho para durar décadas, no temporadas.</h2>
+
+        <div class="grid gap-x-[clamp(32px,5vw,96px)] gap-y-10 md:grid-cols-2">
+          <!-- Bloque 1: materiales -->
+          <div>
+            <h3 class="text-[17px]">Materiales</h3>
+            <ul class="mt-4 flex flex-col gap-2.5 text-[15px] leading-relaxed text-tinta/85">
+              <li class="border-t border-tinta/20 pt-2.5">Empeine de cuero de becerro francés, curtido vegetal en Puy-de-Dôme.</li>
+              <li class="border-t border-tinta/20 pt-2.5">Suela de cuero cosida con construcción Blake: flexible y recraftable.</li>
+              <li class="border-t border-tinta/20 pt-2.5">Forro de piel de cordero y plantilla acolchada sin marca vista.</li>
+              <li class="border-t border-tinta/20 pt-2.5">Cordones encerados de algodón, repuesto incluido.</li>
+            </ul>
+          </div>
+          <!-- Bloque 2: cuándo llevarlo (usos y escenarios) -->
+          <div>
+            <h3 class="text-[17px]">Cuándo llevarlo</h3>
+            <ul class="mt-4 flex flex-col gap-2.5 text-[15px] leading-relaxed text-tinta/85">
+              <li class="border-t border-tinta/20 pt-2.5"><strong>Oficina:</strong> con el Pantalón Sastre « Vendôme » y camisa oxford, el uniforme parisino de diario.</li>
+              <li class="border-t border-tinta/20 pt-2.5"><strong>Cena o evento:</strong> el acabado liso, sin ornamento, funciona con traje completo.</li>
+              <li class="border-t border-tinta/20 pt-2.5"><strong>Fin de semana:</strong> rompe la formalidad con el Vaquero « Belleville » remangado.</li>
+              <li class="border-t border-tinta/20 pt-2.5"><strong>Cuidado:</strong> cepillado semanal y crema neutra una vez al mes; evita la lluvia intensa.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════ COMPLETA EL LOOK ════════════════
+           Venta cruzada: tres piezas que combinan con el derby.
+           Mismo formato de tarjeta que en el catálogo. -->
+      <section aria-labelledby="look-titulo" class="border-t-2 border-tinta/40 pb-20 pt-10">
+        <div class="mb-9 flex flex-wrap items-end justify-between gap-4">
+          <h2 id="look-titulo" class="text-[clamp(24px,2.6vw,34px)]">Completa el look</h2>
+          <a href="catalogo.html" class="btn btn-fantasma">Ver todo el catálogo →</a>
+        </div>
+        <ul class="grid grid-cols-2 gap-x-[clamp(20px,2.5vw,32px)] gap-y-10 md:grid-cols-3">
+          <li>
+            <article class="group">
+              <a href="producto.html?id=oxford-lumiere" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/oxford.jpg" alt="Camisa Oxford « Lumière » de algodón" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Camisa Oxford « Lumière »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">160,00 €</p>
+                </div>
+                <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+              </a>
+            </article>
+          </li>
+          <li>
+            <article class="group">
+              <a href="producto.html?id=sastre-vendome" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/vendome.jpg" alt="Pantalón Sastre « Vendôme » de lana fría" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Pantalón Sastre « Vendôme »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">260,00 €</p>
+                </div>
+                <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+              </a>
+            </article>
+          </li>
+          <li>
+            <article class="group">
+              <a href="producto.html?id=cinturon-bastille" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/cinturon.jpg" alt="Cinturón Cuero « Bastille » con hebilla de latón" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Cinturón Cuero « Bastille »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">130,00 €</p>
+                </div>
+                <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+              </a>
+            </article>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+<!-- BEGIN footer (canónico) -->
+<footer class="mt-20 border-t-2 border-tinta/40 bg-crudo">
+  <div class="contenedor grid grid-cols-1 gap-x-[clamp(24px,3vw,48px)] gap-y-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+
+    <!-- Columna 1: la marca -->
+    <div>
+      <svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true" fill="none"
+           stroke="var(--color-acento)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
+        <path d="M8 34 L8 14 L16 26 L24 14 L24 34"/>
+        <path d="M30 14 L30 34 L40 34"/>
+      </svg>
+      <p class="mt-4 max-w-[26ch] text-[14px] leading-relaxed text-tinta/75">
+        Prêt-à-porter hecho en Francia desde 1998. París, Rue de la Lumière 12.
+      </p>
+    </div>
+
+    <!-- Columna 2: categorías de la tienda (los enlaces llevan a la
+         vista catálogo; ?cat= indica la categoría preseleccionada) -->
+    <nav aria-label="Categorías" class="flex flex-col gap-2.5">
+      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Categorías</h2>
+      <a href="catalogo.html?cat=calzado" class="text-[14px] hover:text-acento">Calzado</a>
+      <a href="catalogo.html?cat=camisas" class="text-[14px] hover:text-acento">Camisas</a>
+      <a href="catalogo.html?cat=pantalones" class="text-[14px] hover:text-acento">Pantalones</a>
+      <a href="catalogo.html?cat=accesorios" class="text-[14px] hover:text-acento">Accesorios</a>
+    </nav>
+
+    <!-- Columna 3: enlaces legales (en el prototipo apuntan a "#"
+         porque esas páginas aún no forman parte del encargo) -->
+    <nav aria-label="Legal" class="flex flex-col gap-2.5">
+      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Legal</h2>
+      <a href="#" class="text-[14px] hover:text-acento">Términos y condiciones</a>
+      <a href="#" class="text-[14px] hover:text-acento">Política de privacidad</a>
+      <a href="#" class="text-[14px] hover:text-acento">Sobre la marca</a>
+    </nav>
+
+    <!-- Columna 4: contacto. <address> es la etiqueta HTML pensada
+         justo para esto (datos de contacto), buena señal para el SEO -->
+    <div class="flex flex-col gap-2.5">
+      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Contacto</h2>
+      <address class="flex flex-col gap-2.5 not-italic">
+        <p class="text-[14px] leading-relaxed">12 Rue de la Lumière<br>75008 París, Francia</p>
+        <a href="mailto:contact@maisonlumiere.example" class="text-[14px] hover:text-acento">contact@maisonlumiere.example</a>
+        <a href="tel:+33100000000" class="text-[14px] tabular-nums hover:text-acento">+33 1 00 00 00 00</a>
+      </address>
+    </div>
+  </div>
+
+  <!-- Línea final con el copyright -->
+  <div class="contenedor flex flex-col gap-2 border-t border-tinta/20 py-6 text-[13px] text-tinta/60 sm:flex-row sm:justify-between">
+    <p>© 2026 Maison Lumière. Todos los derechos reservados.</p>
+    <p>Hecho en Francia · Prototipo académico — 4Geeks Academy</p>
+  </div>
+</footer>
+
+<!-- Datos estructurados Schema.org (SEO): describen la empresa en un
+     formato que los buscadores leen directamente. No se ve en pantalla. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Maison Lumière",
+  "url": "https://maisonlumiere.example/",
+  "logo": "https://maisonlumiere.example/assets/img/logo.svg",
+  "description": "Marca francesa de moda: prêt-à-porter, calzado y accesorios confeccionados en Francia desde 1998.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "12 Rue de la Lumière",
+    "postalCode": "75008",
+    "addressLocality": "París",
+    "addressCountry": "FR"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+33-1-00-00-00-00",
+    "contactType": "customer service",
+    "email": "contact@maisonlumiere.example"
+  }
+}
+</script>
+<!-- END footer (canónico) -->
+
+</body>
+</html>

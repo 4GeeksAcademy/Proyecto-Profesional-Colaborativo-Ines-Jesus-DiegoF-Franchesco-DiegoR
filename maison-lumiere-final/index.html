@@ -1,0 +1,581 @@
+<!doctype html>
+<!-- ════════════════════════════════════════════════════════════════════
+     VISTA 1 de 5: HOME (index.html) · Maison Lumière
+     ────────────────────────────────────────────────────────────────────
+     ¿Qué es esta página?
+     La portada de la tienda online. Es lo primero que ve el cliente.
+
+     ¿Cómo está construida?
+     Solo con HTML semántico y clases de Tailwind CSS (sin JavaScript
+     ni frameworks, tal y como exige el encargo). Las clases tipo
+     "bg-crudo" o "text-acento" son los colores de marca definidos en
+     src/input.css; el resto son utilidades estándar de Tailwind.
+
+     Estructura de la página (de arriba abajo):
+       1. Navbar con logo, buscador y menú de cuenta  (requisito)
+       2. Hero de campaña de la marca                 (requisito)
+       3. Cifras de la maison (banda de confianza)
+       4. Las 4 categorías de la tienda
+       5. Lista horizontal "Nuevos lanzamientos"      (requisito)
+       6. Lista horizontal "Más vendidos"             (requisito)
+       7. Bloque editorial sobre el taller
+       8. Suscripción a la newsletter
+       9. Footer con categorías, legal y contacto     (requisito)
+
+     Este archivo nace de fusionar los prototipos "maison-lumiere"
+     (base técnica) y "maison-lumiere-v2" (diseño y fotos).
+     ════════════════════════════════════════════════════════════════════ -->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <!-- Hace que la página se adapte al ancho de cada pantalla (móvil, tablet…) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SEO: título y descripción únicos de ESTA página. Es lo que Google
+       muestra en sus resultados de búsqueda -->
+  <title>Maison Lumière — Moda francesa: prêt-à-porter, calzado y accesorios</title>
+  <meta name="description" content="Tienda de Maison Lumière, prêt-à-porter confeccionado en Francia desde 1998: calzado, camisas, pantalones y accesorios. Envío gratuito a partir de 150 €.">
+
+  <!-- Icono de la pestaña del navegador y color de la interfaz en móvil -->
+  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#f3f2f2">
+
+  <!-- SEO social (Open Graph): cómo se ve la página al compartirla
+       en redes sociales o aplicaciones de mensajería -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Maison Lumière">
+  <meta property="og:title" content="Maison Lumière — Moda francesa hecha en París">
+  <meta property="og:description" content="Prêt-à-porter confeccionado en Francia desde 1998. Calzado, camisas, pantalones y accesorios.">
+  <meta property="og:image" content="https://maisonlumiere.example/assets/photos/hero.jpg">
+  <meta property="og:locale" content="es_ES">
+
+  <!-- Tipografía "Archivo" desde Google Fonts (la letra de la marca) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos compilada por Tailwind (se genera con build.sh) -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- SEO: datos estructurados del sitio web. Le dicen a Google que
+       este sitio tiene un buscador propio (el de la navbar) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Maison Lumière",
+    "url": "https://maisonlumiere.example/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://maisonlumiere.example/catalogo.html?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+</head>
+
+<!-- flex + min-h-screen: si la página fuera corta, el footer se queda
+     igualmente pegado abajo -->
+<body class="flex min-h-screen flex-col">
+
+<!-- BEGIN navbar (canónico) -->
+
+<!-- Enlace de accesibilidad: invisible salvo que se navegue con la
+     tecla Tab; permite saltar directo al contenido principal -->
+<a href="#contenido"
+   class="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:bg-tinta focus:px-4 focus:py-2 focus:text-crudo">
+  Saltar al contenido
+</a>
+
+<!-- Barra de promoción: mensaje comercial fijo en todas las vistas -->
+<p class="border-b border-tinta/20 bg-crudo px-[clamp(20px,5vw,72px)] py-2 text-[13px] uppercase tracking-[0.08em] text-tinta/70">
+  Envío gratuito a partir de 150 € — devoluciones en 30 días
+</p>
+
+<header class="border-b-2 border-tinta/40 bg-crudo">
+  <div class="contenedor flex items-center gap-6 py-3.5">
+
+    <!-- Logo: monograma ML dibujado en SVG + nombre de la marca.
+         mr-auto empuja el resto de la barra hacia la derecha -->
+    <a href="index.html" class="mr-auto flex items-center gap-3" aria-label="Maison Lumière, ir al inicio">
+      <svg width="26" height="26" viewBox="0 0 48 48" aria-hidden="true" fill="none"
+           stroke="var(--color-acento)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
+        <path d="M8 34 L8 14 L16 26 L24 14 L24 34"/>
+        <path d="M30 14 L30 34 L40 34"/>
+      </svg>
+      <span class="text-[15px] font-extrabold uppercase tracking-[0.14em]">Maison Lumière</span>
+    </a>
+
+    <!-- Buscador (visible solo en escritorio; en móvil va dentro del menú) -->
+    <form role="search" action="catalogo.html" method="get" class="hidden lg:block">
+      <label for="buscador" class="sr-only">Buscar productos</label>
+      <input id="buscador" name="q" type="search" placeholder="Buscar en el catálogo" class="campo w-[220px] py-2">
+    </form>
+
+    <!-- Navegación principal + menú de cuenta (escritorio) -->
+    <nav aria-label="Principal" class="hidden items-center gap-6 text-[14px] lg:flex">
+      <a data-nav="inicio" aria-current="page" href="index.html" class="hover:text-acento">Inicio</a>
+      <a data-nav="catalogo" href="catalogo.html" class="hover:text-acento">Catálogo</a>
+      <a href="#" class="flex items-center gap-1.5 hover:text-acento" title="Tu cuenta (maqueta sin funcionalidad)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="square" aria-hidden="true">
+          <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+        </svg>
+        Cuenta
+      </a>
+    </nav>
+
+    <!-- Carrito: visible SIEMPRE (móvil y escritorio), con contador
+         de artículos. El "4" es el estado de ejemplo del prototipo:
+         coincide con las unidades de la vista carrito.html -->
+    <a data-nav="carrito" href="carrito.html" class="flex items-center gap-2 text-[14px] hover:text-acento"
+       aria-label="Carrito, 4 artículos">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+        <path d="M3 6h18"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      <span class="hidden sm:inline">Carrito</span>
+      <span aria-hidden="true"
+            class="inline-flex h-[18px] min-w-[18px] items-center justify-center bg-acento-fuerte px-1 text-[11px] font-semibold tabular-nums text-white">4</span>
+    </a>
+
+    <!-- Menú móvil: <details> abre y cierra el panel sin JavaScript -->
+    <details class="relative lg:hidden">
+      <summary class="cursor-pointer p-2" aria-label="Abrir menú de navegación">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="square" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </summary>
+      <div class="absolute right-0 z-40 mt-3 w-64 border-2 border-tinta/40 bg-crudo p-5 shadow-lg">
+        <form role="search" action="catalogo.html" method="get" class="mb-4">
+          <label for="buscador-movil" class="sr-only">Buscar productos</label>
+          <input id="buscador-movil" name="q" type="search" placeholder="Buscar…" class="campo py-2">
+        </form>
+        <nav aria-label="Principal (móvil)" class="flex flex-col gap-4 text-[14px]">
+          <a data-nav="inicio" aria-current="page" href="index.html" class="hover:text-acento">Inicio</a>
+          <a data-nav="catalogo" href="catalogo.html" class="hover:text-acento">Catálogo</a>
+          <a data-nav="carrito" href="carrito.html" class="hover:text-acento">Carrito</a>
+          <a href="#" class="hover:text-acento">Cuenta</a>
+        </nav>
+      </div>
+    </details>
+  </div>
+</header>
+<!-- END navbar (canónico) -->
+
+  <!-- Contenido principal. El id="contenido" es el destino del enlace
+       "Saltar al contenido" de la navbar (accesibilidad) -->
+  <main id="contenido" class="flex-1">
+    <div class="contenedor">
+
+      <!-- ════════════════ 2 · HERO DE CAMPAÑA ════════════════
+           Gran titular + foto de la colección. flex-wrap hace la
+           magia responsive: en pantallas estrechas la foto salta
+           debajo del texto sin necesidad de reglas extra. -->
+      <section aria-labelledby="hero-titulo" class="flex flex-wrap items-center gap-y-14 gap-x-[clamp(32px,5vw,80px)] pb-16 pt-[clamp(48px,8vh,96px)]">
+        <div class="min-w-0 flex-[1_1_480px]">
+          <h1 id="hero-titulo" class="ml-[-0.05em] text-[clamp(42px,5.6vw,80px)] leading-[1.06] tracking-[-0.02em]">
+            <span class="block">El vestidor esencial.</span>
+            <span class="block text-acento">Hecho en Francia.</span>
+          </h1>
+          <p class="mt-8 max-w-[56ch] text-[17px] leading-[1.65] text-tinta/80">
+            Prêt-à-porter en materiales nobles, cortado en talleres franceses desde 1998.
+            Sin temporadas de usar y tirar: piezas pensadas para quedarse.
+          </p>
+          <!-- Las dos llamadas a la acción del hero -->
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="catalogo.html" class="btn btn-primario">Ver la colección</a>
+            <a href="#nuevos" class="btn btn-secundario">Nuevos lanzamientos</a>
+          </div>
+        </div>
+        <!-- Foto de campaña. fetchpriority="high" pide al navegador
+             cargarla la primera, porque es lo más visible al entrar -->
+        <figure class="max-w-[460px] flex-[1_1_340px] bg-superficie">
+          <img src="assets/photos/hero.jpg" alt="Campaña Otoño 2026 de Maison Lumière: modelo con abrigo de lana, en blanco y negro"
+               width="800" height="1000" fetchpriority="high" decoding="async"
+               class="foto-bn aspect-[4/5]">
+        </figure>
+      </section>
+
+      <hr class="separador">
+
+      <!-- ════════════════ 3 · CIFRAS DE LA MAISON ════════════════
+           Banda de confianza: cuatro datos que resumen la promesa de
+           la marca (envío, devoluciones, historia, confección). -->
+      <section aria-label="La maison, en cifras" class="grid grid-cols-2 gap-x-8 gap-y-10 py-14 lg:grid-cols-4">
+        <div>
+          <p class="text-[clamp(34px,3.4vw,48px)] font-extrabold leading-[1.1] tracking-[-0.015em] tabular-nums text-acento">150 €</p>
+          <p class="mt-3 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Envío gratuito a partir de este importe</p>
+        </div>
+        <div>
+          <p class="text-[clamp(34px,3.4vw,48px)] font-extrabold leading-[1.1] tracking-[-0.015em] tabular-nums text-acento">30 días</p>
+          <p class="mt-3 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Cambios y devoluciones sin coste</p>
+        </div>
+        <div>
+          <p class="text-[clamp(34px,3.4vw,48px)] font-extrabold leading-[1.1] tracking-[-0.015em] tabular-nums text-acento">1998</p>
+          <p class="mt-3 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Maison fundada en París</p>
+        </div>
+        <div>
+          <p class="text-[clamp(34px,3.4vw,48px)] font-extrabold leading-[1.1] tracking-[-0.015em] tabular-nums text-acento">100 %</p>
+          <p class="mt-3 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Confección francesa, talleres propios</p>
+        </div>
+      </section>
+
+      <hr class="separador">
+
+      <!-- ════════════════ 4 · LAS CUATRO CATEGORÍAS ════════════════
+           Acceso directo al catálogo filtrado. Cada tarjeta lleva su
+           número editorial (01–04), foto en blanco y negro y nombre. -->
+      <section aria-labelledby="categorias-titulo" class="py-16">
+        <span class="etiqueta-seccion mb-3.5">Catálogo</span>
+        <h2 id="categorias-titulo" class="mb-10 text-[clamp(28px,3vw,40px)]">Cuatro categorías. Lo esencial.</h2>
+
+        <div class="grid grid-cols-2 gap-x-[clamp(20px,2.5vw,32px)] gap-y-8 lg:grid-cols-4">
+          <a href="catalogo.html?cat=calzado" class="group flex flex-col gap-3 border-t-2 border-tinta/40 pt-3.5">
+            <p class="text-[15px] font-extrabold tabular-nums">01</p>
+            <div class="overflow-hidden bg-superficie">
+              <img src="assets/photos/mocasin.jpg" alt="Categoría calzado: mocasín de cuero" width="600" height="800"
+                   loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+            </div>
+            <p class="text-[14px] uppercase tracking-[0.08em] group-hover:text-acento">Calzado</p>
+          </a>
+          <a href="catalogo.html?cat=camisas" class="group flex flex-col gap-3 border-t-2 border-tinta/40 pt-3.5">
+            <p class="text-[15px] font-extrabold tabular-nums">02</p>
+            <div class="overflow-hidden bg-superficie">
+              <img src="assets/photos/camisas-cat.jpg" alt="Categoría camisas: camisas colgadas en el taller" width="600" height="800"
+                   loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+            </div>
+            <p class="text-[14px] uppercase tracking-[0.08em] group-hover:text-acento">Camisas</p>
+          </a>
+          <a href="catalogo.html?cat=pantalones" class="group flex flex-col gap-3 border-t-2 border-tinta/40 pt-3.5">
+            <p class="text-[15px] font-extrabold tabular-nums">03</p>
+            <div class="overflow-hidden bg-superficie">
+              <img src="assets/photos/vaquero.jpg" alt="Categoría pantalones: vaquero de denim selvedge" width="600" height="800"
+                   loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+            </div>
+            <p class="text-[14px] uppercase tracking-[0.08em] group-hover:text-acento">Pantalones</p>
+          </a>
+          <a href="catalogo.html?cat=accesorios" class="group flex flex-col gap-3 border-t-2 border-tinta/40 pt-3.5">
+            <p class="text-[15px] font-extrabold tabular-nums">04</p>
+            <div class="overflow-hidden bg-superficie">
+              <img src="assets/photos/cinturon.jpg" alt="Categoría accesorios: cinturón de cuero con hebilla de latón" width="600" height="800"
+                   loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+            </div>
+            <p class="text-[14px] uppercase tracking-[0.08em] group-hover:text-acento">Accesorios</p>
+          </a>
+        </div>
+      </section>
+
+      <hr class="separador">
+
+      <!-- ════════════════ 5 · NUEVOS LANZAMIENTOS ════════════════
+           Primera lista horizontal de productos (requisito).
+           En móvil se desliza de lado con el dedo (overflow-x-auto +
+           snap); en escritorio se convierte en una cuadrícula de 4. -->
+      <section id="nuevos" aria-labelledby="nuevos-titulo" class="py-16">
+        <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <span class="etiqueta-seccion mb-3.5">Recién llegado</span>
+            <h2 id="nuevos-titulo" class="text-[clamp(28px,3vw,40px)]">Nuevos lanzamientos</h2>
+          </div>
+          <a href="catalogo.html" class="btn btn-fantasma">Ver todo el catálogo →</a>
+        </div>
+
+        <ul class="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 lg:grid lg:grid-cols-4 lg:overflow-visible lg:pb-0">
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto">
+            <article class="group">
+              <a href="producto.html?id=derby-rive-gauche" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/derby.jpg" alt="Derby « Rive Gauche », zapato de cuero de becerro" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] object-left transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Derby « Rive Gauche »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">420,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                  <span class="etiqueta etiqueta-roja">Nuevo</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto">
+            <article class="group">
+              <a href="producto.html?id=oxford-lumiere" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/oxford.jpg" alt="Camisa Oxford « Lumière » de algodón" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Camisa Oxford « Lumière »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">160,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                  <span class="etiqueta etiqueta-roja">Nuevo</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto">
+            <article class="group">
+              <a href="producto.html?id=sastre-vendome" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/vendome.jpg" alt="Pantalón sastre « Vendôme » de lana fría" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Pantalón Sastre « Vendôme »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">260,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                  <span class="etiqueta etiqueta-roja">Nuevo</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto">
+            <article class="group">
+              <a href="producto.html?id=bufanda-alpine" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/alpine.jpg" alt="Bufanda « Alpine » de cachemir" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Bufanda Cachemir « Alpine »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">210,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                  <span class="etiqueta etiqueta-roja">Nuevo</span>
+                </div>
+              </a>
+            </article>
+          </li>
+        </ul>
+      </section>
+
+      <hr class="separador">
+
+      <!-- ════════════════ 6 · MÁS VENDIDOS ════════════════
+           Segunda lista horizontal de productos (requisito).
+           Mismo patrón deslizable que "Nuevos lanzamientos". -->
+      <section id="masvendidos" aria-labelledby="masvendidos-titulo" class="py-16">
+        <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <span class="etiqueta-seccion mb-3.5">Los favoritos</span>
+            <h2 id="masvendidos-titulo" class="text-[clamp(28px,3vw,40px)]">Más vendidos</h2>
+          </div>
+          <a href="catalogo.html" class="btn btn-fantasma">Ver todo el catálogo →</a>
+        </div>
+
+        <ul class="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 lg:grid lg:grid-cols-4 lg:overflow-visible lg:pb-0">
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto">
+            <article class="group">
+              <a href="producto.html?id=mocasin-saint-germain" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/mocasin.jpg" alt="Mocasín « Saint-Germain » de cuero graso" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Mocasín « Saint-Germain »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">380,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                  <span class="etiqueta etiqueta-neutra">Más vendido</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto">
+            <article class="group">
+              <a href="producto.html?id=lino-provence" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/lino.jpg" alt="Camisa « Provence » de lino lavado" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Camisa Lino « Provence »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">180,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                  <span class="etiqueta etiqueta-neutra">Más vendido</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto">
+            <article class="group">
+              <a href="producto.html?id=vaquero-belleville" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/vaquero.jpg" alt="Vaquero « Belleville » de denim selvedge" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Vaquero « Belleville »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">190,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                  <span class="etiqueta etiqueta-neutra">Más vendido</span>
+                </div>
+              </a>
+            </article>
+          </li>
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto">
+            <article class="group">
+              <a href="producto.html?id=cinturon-bastille" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/cinturon.jpg" alt="Cinturón « Bastille » de cuero con hebilla de latón" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Cinturón Cuero « Bastille »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">130,00 €</p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                  <span class="etiqueta etiqueta-neutra">Más vendido</span>
+                </div>
+              </a>
+            </article>
+          </li>
+        </ul>
+      </section>
+
+      <hr class="separador">
+
+      <!-- ════════════════ 7 · EDITORIAL: EL TALLER ════════════════
+           Bloque de marca: foto del atelier + texto sobre la casa.
+           Aporta contenido real e indexable (bueno para el SEO). -->
+      <section aria-labelledby="maison-titulo" class="grid items-center gap-x-[clamp(32px,5vw,96px)] gap-y-10 py-16 md:grid-cols-2">
+        <figure class="bg-superficie">
+          <img src="assets/photos/atelier.jpg" alt="El taller de Maison Lumière: mesas de corte y patrones colgados" width="900" height="600"
+               loading="lazy" decoding="async" class="foto-bn aspect-[3/2]">
+        </figure>
+        <div>
+          <span class="etiqueta-seccion mb-3.5">La maison</span>
+          <h2 id="maison-titulo" class="text-[clamp(28px,3vw,40px)] leading-[1.15]">Impreso en blanco y negro, cosido en color.</h2>
+          <p class="mt-6 max-w-[48ch] text-[15.5px] leading-[1.75] text-tinta/80">
+            Desde 1998 cortamos cada pieza en talleres de Romans-sur-Isère, Cholet y París.
+            Pocos modelos, revisados cada año en lugar de sustituidos: la colección crece
+            por corrección, no por acumulación.
+          </p>
+          <div class="mt-6">
+            <a href="#" class="btn btn-fantasma">Sobre la marca →</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ════════════════ 8 · NEWSLETTER ════════════════
+         Franja roja a todo el ancho. El formulario es una maqueta:
+         en la web real enviaría el correo a la plataforma de email
+         marketing de la marca. -->
+    <section aria-labelledby="news-titulo" class="bg-acento-fuerte text-white">
+      <div class="contenedor py-20">
+        <h2 id="news-titulo" class="ml-[-0.05em] text-[clamp(34px,4.2vw,56px)] leading-[1.06]">
+          <span class="block">La luz de París,</span>
+          <span class="block">en tu correo.</span>
+        </h2>
+        <form action="#" method="post" class="mt-10 flex flex-wrap gap-3">
+          <label for="email-news" class="sr-only">Tu correo electrónico</label>
+          <input id="email-news" name="email" type="email" required placeholder="tu@correo.com"
+                 class="campo max-w-[320px] border-white bg-white/95">
+          <button type="submit" class="btn border-2 border-white text-white hover:bg-white hover:text-acento-oscuro">Suscribirme</button>
+        </form>
+        <p class="mt-5 text-[13px] uppercase tracking-[0.08em] text-white/85">Un correo al mes. Sin ruido.</p>
+      </div>
+    </section>
+  </main>
+
+<!-- BEGIN footer (canónico) -->
+<footer class="mt-20 border-t-2 border-tinta/40 bg-crudo">
+  <div class="contenedor grid grid-cols-1 gap-x-[clamp(24px,3vw,48px)] gap-y-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+
+    <!-- Columna 1: la marca -->
+    <div>
+      <svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true" fill="none"
+           stroke="var(--color-acento)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
+        <path d="M8 34 L8 14 L16 26 L24 14 L24 34"/>
+        <path d="M30 14 L30 34 L40 34"/>
+      </svg>
+      <p class="mt-4 max-w-[26ch] text-[14px] leading-relaxed text-tinta/75">
+        Prêt-à-porter hecho en Francia desde 1998. París, Rue de la Lumière 12.
+      </p>
+    </div>
+
+    <!-- Columna 2: categorías de la tienda (los enlaces llevan a la
+         vista catálogo; ?cat= indica la categoría preseleccionada) -->
+    <nav aria-label="Categorías" class="flex flex-col gap-2.5">
+      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Categorías</h2>
+      <a href="catalogo.html?cat=calzado" class="text-[14px] hover:text-acento">Calzado</a>
+      <a href="catalogo.html?cat=camisas" class="text-[14px] hover:text-acento">Camisas</a>
+      <a href="catalogo.html?cat=pantalones" class="text-[14px] hover:text-acento">Pantalones</a>
+      <a href="catalogo.html?cat=accesorios" class="text-[14px] hover:text-acento">Accesorios</a>
+    </nav>
+
+    <!-- Columna 3: enlaces legales (en el prototipo apuntan a "#"
+         porque esas páginas aún no forman parte del encargo) -->
+    <nav aria-label="Legal" class="flex flex-col gap-2.5">
+      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Legal</h2>
+      <a href="#" class="text-[14px] hover:text-acento">Términos y condiciones</a>
+      <a href="#" class="text-[14px] hover:text-acento">Política de privacidad</a>
+      <a href="#" class="text-[14px] hover:text-acento">Sobre la marca</a>
+    </nav>
+
+    <!-- Columna 4: contacto. <address> es la etiqueta HTML pensada
+         justo para esto (datos de contacto), buena señal para el SEO -->
+    <div class="flex flex-col gap-2.5">
+      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Contacto</h2>
+      <address class="flex flex-col gap-2.5 not-italic">
+        <p class="text-[14px] leading-relaxed">12 Rue de la Lumière<br>75008 París, Francia</p>
+        <a href="mailto:contact@maisonlumiere.example" class="text-[14px] hover:text-acento">contact@maisonlumiere.example</a>
+        <a href="tel:+33100000000" class="text-[14px] tabular-nums hover:text-acento">+33 1 00 00 00 00</a>
+      </address>
+    </div>
+  </div>
+
+  <!-- Línea final con el copyright -->
+  <div class="contenedor flex flex-col gap-2 border-t border-tinta/20 py-6 text-[13px] text-tinta/60 sm:flex-row sm:justify-between">
+    <p>© 2026 Maison Lumière. Todos los derechos reservados.</p>
+    <p>Hecho en Francia · Prototipo académico — 4Geeks Academy</p>
+  </div>
+</footer>
+
+<!-- Datos estructurados Schema.org (SEO): describen la empresa en un
+     formato que los buscadores leen directamente. No se ve en pantalla. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Maison Lumière",
+  "url": "https://maisonlumiere.example/",
+  "logo": "https://maisonlumiere.example/assets/img/logo.svg",
+  "description": "Marca francesa de moda: prêt-à-porter, calzado y accesorios confeccionados en Francia desde 1998.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "12 Rue de la Lumière",
+    "postalCode": "75008",
+    "addressLocality": "París",
+    "addressCountry": "FR"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+33-1-00-00-00-00",
+    "contactType": "customer service",
+    "email": "contact@maisonlumiere.example"
+  }
+}
+</script>
+<!-- END footer (canónico) -->
+
+</body>
+</html>
