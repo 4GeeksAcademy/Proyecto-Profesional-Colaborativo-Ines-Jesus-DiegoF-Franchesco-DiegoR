@@ -176,64 +176,410 @@
   <!-- Contenido principal. El id="contenido" es el destino del enlace
        "Saltar al contenido" de la navbar (accesibilidad) -->
   <main id="contenido" class="flex-1">
-    <div class="contenedor">
 
-      <!-- ════════════════════════════════════════════════════════════════
-           ZONA DE TRABAJO · VISTA 1 DE 5 — HOME
-           ────────────────────────────────────────────────────────────────
-           Responsable: Diego Reynoso
-           Rama:        feat/home
+    <!-- ════════════════════════════════════════════════════════════════
+         VISTA 1 DE 5 — HOME · Responsable: Diego Reynoso · Rama feat/home
+         Solo se edita el interior de <main>. head, navbar y footer son
+         canónicos y comunes a las 5 vistas (ver partials/).
+         Construido con HTML5 semántico + Tailwind CSS v4, sin JavaScript.
+         ════════════════════════════════════════════════════════════════ -->
 
-           CONSTRUYE AQUÍ DENTRO, entre <main> y </main>.
-           NO toques nada fuera: el <head>, la navbar y el footer son
-           comunes a las 5 vistas y deben quedar idénticos. Si hay que
-           cambiarlos, se habla con el grupo y se cambia en las 5 a la vez
-           (la referencia está en partials/navbar.html y partials/footer.html).
+    <!-- Guarda anti-desbordamiento horizontal: el sistema base no fija
+         overflow-x en body/html, así que envolvemos las secciones para que
+         ningún rebose accidental provoque scroll lateral en toda la página.
+         overflow-x-clip solo recorta el eje X: no crea contenedor de scroll,
+         no afecta al scroll vertical ni a los carruseles (que ya deslizan
+         con su propio overflow-x-auto). -->
+    <div class="overflow-x-clip">
 
-           Requisitos del cliente que DEBE cumplir esta vista:
-           · Barra superior (navbar) con logo, buscador y menú de cuenta  ->  YA PUESTA, no la toques
-           · Sección Hero destacando productos especiales o campañas de la marca
-           · Listado horizontal de cards de producto: "Nuevos lanzamientos"
-           · Listado horizontal de cards de producto: "Más vendidos"
-           · Footer con categorías, legal y contacto  ->  YA PUESTO, no lo toques
+    <!-- ①  HERO — Campaña Printemps-Été ─────────────────────────────────
+         Texto a la izquierda, fotografía de campaña a la derecha. En móvil
+         se apila (imagen debajo del texto). El CTA lleva al catálogo. -->
+    <section aria-labelledby="hero-titulo" class="border-b-2 border-tinta/40">
+      <div class="contenedor grid items-center gap-x-[clamp(32px,5vw,80px)] gap-y-10 py-[clamp(48px,8vh,96px)] lg:grid-cols-2">
 
-           Piezas del sistema de diseño listas para usar
-           (todas definidas en src/input.css, no hace falta inventarlas):
-           · .contenedor         ancho máximo 1200px + márgenes laterales
-           · .etiqueta-seccion   la "ceja" roja en mayúsculas de cada bloque
-           · .separador          línea divisoria gruesa del diseño
-           · .btn + .btn-primario / .btn-secundario / .btn-fantasma
-           · .etiqueta-campo + .campo          formularios
-           · .segmento + .segmento-opcion      filtros y tallas (sin JS)
-           · .etiqueta + .etiqueta-roja / .etiqueta-neutra
-           · .foto-bn            foto en blanco y negro (firma de la marca)
+        <!-- Columna de texto -->
+        <div>
+          <span class="etiqueta-seccion">Colección Printemps-Été</span>
+          <h1 id="hero-titulo" class="mt-4 text-[clamp(42px,5.6vw,80px)] leading-[1.06]">
+            El vestuario francés, depurado a lo esencial.
+          </h1>
+          <p class="mt-6 max-w-[52ch] text-[17px] leading-relaxed text-tinta/85">
+            Prendas confeccionadas en nuestro atelier de París y pensadas para
+            durar: líneas sobrias, materiales nobles y el saber hacer de la
+            Maison desde 1998.
+          </p>
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <a href="catalogo.html" class="btn btn-primario">Descubrir el catálogo</a>
+            <a href="#nuevos-lanzamientos" class="btn btn-secundario">Ver novedades</a>
+          </div>
+        </div>
 
-           Colores de marca (usables como bg-, text-, border-):
-           crudo · superficie · tinta · acento · acento-fuerte
-           acento-oscuro · acento-claro · acento-noche · humo · grafito
+        <!-- Columna de imagen. La foto es decorativa de campaña: alt describe
+             la escena para lectores de pantalla. -->
+        <div class="overflow-hidden border-2 border-tinta/40 bg-superficie">
+          <img src="assets/photos/hero.jpg" width="960" height="1200"
+               alt="Modelo vistiendo un conjunto de la colección Printemps-Été de Maison Lumière."
+               class="foto-bn aspect-[4/5]" fetchpriority="high">
+        </div>
+      </div>
+    </section>
 
-           Fotos disponibles en assets/photos/:
-           alpine · atelier · camisas-cat · cinturon · derby · hero
-           lino · mocasin · oxford · vaquero · vendome
+    <!-- ②  CIFRAS DE LA MAISON — banda de confianza ─────────────────────
+         Lista de 4 argumentos de prestigio. Banda a todo el ancho con
+         fondo superficie para separarla visualmente del hero. -->
+    <section aria-labelledby="cifras-titulo" class="border-b-2 border-tinta/40 bg-superficie">
+      <h2 id="cifras-titulo" class="sr-only">Garantías de la Maison</h2>
+      <div class="contenedor py-10">
+        <dl class="grid grid-cols-2 gap-x-8 gap-y-8 text-center lg:grid-cols-4">
+          <div>
+            <dt class="text-[clamp(19px,4.6vw,26px)] font-extrabold tracking-[-0.02em]">Desde 1998</dt>
+            <dd class="mt-2 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Tradición de la casa</dd>
+          </div>
+          <div>
+            <dt class="text-[clamp(19px,4.6vw,26px)] font-extrabold tracking-[-0.02em]">100&nbsp;% francesa</dt>
+            <dd class="mt-2 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Confección en Francia</dd>
+          </div>
+          <div>
+            <dt class="text-[clamp(19px,4.6vw,26px)] font-extrabold tracking-[-0.02em]">Atelier en París</dt>
+            <dd class="mt-2 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Hecho a mano</dd>
+          </div>
+          <div>
+            <dt class="text-[clamp(19px,4.6vw,26px)] font-extrabold tracking-[-0.02em]">Envío gratis</dt>
+            <dd class="mt-2 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Desde 150&nbsp;€</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
 
-           IMPORTANTE — si usas una clase de Tailwind que no estuviera ya
-           en el proyecto, no se verá hasta que recompiles el CSS:
-               .\build.ps1      (Windows)
-               sh build.sh      (Mac / Linux)
-           ════════════════════════════════════════════════════════════════ -->
-      <section aria-labelledby="titulo-vista" class="py-[clamp(64px,14vh,140px)] text-center">
-        <span class="etiqueta-seccion">Vista 1 de 5</span>
-        <h1 id="titulo-vista" class="mt-4 text-[clamp(34px,6vw,64px)]">Home</h1>
-        <p class="mx-auto mt-6 max-w-[54ch] text-tinta/70">
-          Vista pendiente de desarrollo. La navbar, el footer y el sistema de
-          diseño ya están listos: solo falta el contenido de esta página.
+    <!-- ③  CATEGORÍAS — las 4 familias del catálogo ─────────────────────
+         Cada tarjeta es un enlace a catálogo con la categoría preseleccionada
+         (?cat=). En móvil 2 columnas, en escritorio 4. -->
+    <section aria-labelledby="categorias-titulo" class="contenedor py-16">
+      <div class="mb-10">
+        <span class="etiqueta-seccion">Explora la tienda</span>
+        <h2 id="categorias-titulo" class="mt-3 text-[clamp(28px,3vw,40px)]">Compra por categoría</h2>
+      </div>
+
+      <ul class="grid grid-cols-2 gap-x-5 gap-y-8 lg:grid-cols-4">
+        <!-- Calzado -->
+        <li>
+          <a href="catalogo.html?cat=calzado" class="group block">
+            <div class="overflow-hidden border-2 border-tinta/40 bg-superficie">
+              <img src="assets/photos/mocasin.jpg" width="600" height="750"
+                   alt="Mocasines de piel de la línea de calzado."
+                   class="foto-bn aspect-[4/5] transition-transform duration-500 group-hover:scale-[1.03]">
+            </div>
+            <h3 class="mt-3.5 text-[20px] group-hover:text-acento">Calzado</h3>
+            <p class="mt-1 text-[14px] text-tinta/70">Derbys, mocasines y botas</p>
+          </a>
+        </li>
+        <!-- Camisas -->
+        <li>
+          <a href="catalogo.html?cat=camisas" class="group block">
+            <div class="overflow-hidden border-2 border-tinta/40 bg-superficie">
+              <img src="assets/photos/camisas-cat.jpg" width="600" height="750"
+                   alt="Camisas dobladas de la colección."
+                   class="foto-bn aspect-[4/5] transition-transform duration-500 group-hover:scale-[1.03]">
+            </div>
+            <h3 class="mt-3.5 text-[20px] group-hover:text-acento">Camisas</h3>
+            <p class="mt-1 text-[14px] text-tinta/70">Oxford, lino y popelina</p>
+          </a>
+        </li>
+        <!-- Pantalones -->
+        <li>
+          <a href="catalogo.html?cat=pantalones" class="group block">
+            <div class="overflow-hidden border-2 border-tinta/40 bg-superficie">
+              <img src="assets/photos/vendome.jpg" width="600" height="750"
+                   alt="Pantalón de sastre visto de cerca."
+                   class="foto-bn aspect-[4/5] transition-transform duration-500 group-hover:scale-[1.03]">
+            </div>
+            <h3 class="mt-3.5 text-[20px] group-hover:text-acento">Pantalones</h3>
+            <p class="mt-1 text-[14px] text-tinta/70">Sastre, vaquero y chino</p>
+          </a>
+        </li>
+        <!-- Accesorios -->
+        <li>
+          <a href="catalogo.html?cat=accesorios" class="group block">
+            <div class="overflow-hidden border-2 border-tinta/40 bg-superficie">
+              <img src="assets/photos/cinturon.jpg" width="600" height="750"
+                   alt="Cinturón de cuero enrollado."
+                   class="foto-bn aspect-[4/5] transition-transform duration-500 group-hover:scale-[1.03]">
+            </div>
+            <h3 class="mt-3.5 text-[20px] group-hover:text-acento">Accesorios</h3>
+            <p class="mt-1 text-[14px] text-tinta/70">Cinturones, bufandas y más</p>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ④  NUEVOS LANZAMIENTOS — lista horizontal deslizable ────────────
+         Scroll horizontal nativo (overflow-x-auto + snap) sin JavaScript.
+         tabindex="0" hace la tira accesible por teclado; role="list" para
+         que los lectores de pantalla la anuncien como una lista. -->
+    <section id="nuevos-lanzamientos" aria-labelledby="nuevos-titulo"
+             class="border-t-2 border-tinta/40 bg-superficie">
+      <div class="contenedor py-16">
+        <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <span class="etiqueta-seccion">Recién llegado</span>
+            <h2 id="nuevos-titulo" class="mt-3 text-[clamp(28px,3vw,40px)]">Nuevos lanzamientos</h2>
+          </div>
+          <a href="catalogo.html" class="btn btn-fantasma">Ver todo</a>
+        </div>
+
+        <ul tabindex="0" aria-label="Nuevos lanzamientos, lista deslizable horizontalmente"
+            class="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
+
+          <!-- Card producto -->
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto lg:flex-[1_1_200px]">
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=derby-rive-gauche" class="block overflow-hidden">
+                <img src="assets/photos/derby.jpg" width="600" height="800"
+                     alt="Derby « Rive Gauche » en piel."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-5">
+                <span class="etiqueta etiqueta-roja mb-3.5 self-start">Nouveau</span>
+                <h3 class="text-[17px] leading-snug">
+                  <a href="producto.html?id=derby-rive-gauche" class="group-hover:text-acento">Derby « Rive Gauche »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                <p class="mt-auto pt-4 text-[20px] font-extrabold tabular-nums">320&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto lg:flex-[1_1_200px]">
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=lino-provence" class="block overflow-hidden">
+                <img src="assets/photos/lino.jpg" width="600" height="800"
+                     alt="Camisa de lino « Provence »."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-5">
+                <span class="etiqueta etiqueta-roja mb-3.5 self-start">Nouveau</span>
+                <h3 class="text-[17px] leading-snug">
+                  <a href="producto.html?id=lino-provence" class="group-hover:text-acento">Camisa Lino « Provence »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                <p class="mt-auto pt-4 text-[20px] font-extrabold tabular-nums">140&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto lg:flex-[1_1_200px]">
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=vaquero-belleville" class="block overflow-hidden">
+                <img src="assets/photos/vaquero.jpg" width="600" height="800"
+                     alt="Vaquero « Belleville » de corte recto."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-5">
+                <span class="etiqueta etiqueta-roja mb-3.5 self-start">Nouveau</span>
+                <h3 class="text-[17px] leading-snug">
+                  <a href="producto.html?id=vaquero-belleville" class="group-hover:text-acento">Vaquero « Belleville »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                <p class="mt-auto pt-4 text-[20px] font-extrabold tabular-nums">160&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto lg:flex-[1_1_200px]">
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=bufanda-alpine" class="block overflow-hidden">
+                <img src="assets/photos/alpine.jpg" width="600" height="800"
+                     alt="Bufanda de cachemir « Alpine »."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-5">
+                <span class="etiqueta etiqueta-roja mb-3.5 self-start">Nouveau</span>
+                <h3 class="text-[17px] leading-snug">
+                  <a href="producto.html?id=bufanda-alpine" class="group-hover:text-acento">Bufanda Cachemir « Alpine »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                <p class="mt-auto pt-4 text-[20px] font-extrabold tabular-nums">95&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ⑤  MÁS VENDIDOS — lista horizontal con valoración ───────────────
+         Igual que la anterior pero cada card muestra estrellas (con texto
+         alternativo accesible) y un botón "Añadir a la bolsa". -->
+    <section aria-labelledby="vendidos-titulo" class="border-t-2 border-tinta/40">
+      <div class="contenedor py-16">
+        <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <span class="etiqueta-seccion">Los favoritos</span>
+            <h2 id="vendidos-titulo" class="mt-3 text-[clamp(28px,3vw,40px)]">Más vendidos</h2>
+          </div>
+          <a href="catalogo.html" class="btn btn-fantasma">Ver todo</a>
+        </div>
+
+        <ul tabindex="0" aria-label="Más vendidos, lista deslizable horizontalmente"
+            class="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
+
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto lg:flex-[1_1_200px]">
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=mocasin-saint-germain" class="block overflow-hidden">
+                <img src="assets/photos/mocasin.jpg" width="600" height="800"
+                     alt="Mocasín « Saint-Germain » en piel."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-5">
+                <p class="mb-3.5 flex items-center gap-1.5" aria-hidden="true">
+                  <span class="text-acento" aria-hidden="true">★★★★★</span>
+                  <span class="text-[13px] text-tinta/70">(128)</span>
+                </p>
+                <p class="sr-only">Valoración: 5 de 5 estrellas, 128 reseñas.</p>
+                <h3 class="text-[17px] leading-snug">
+                  <a href="producto.html?id=mocasin-saint-germain" class="group-hover:text-acento">Mocasín « Saint-Germain »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                <p class="mt-4 text-[20px] font-extrabold tabular-nums">290&nbsp;€</p>
+                <button type="button" class="btn btn-secundario mt-auto w-full">Añadir a la bolsa</button>
+              </div>
+            </article>
+          </li>
+
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto lg:flex-[1_1_200px]">
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=oxford-lumiere" class="block overflow-hidden">
+                <img src="assets/photos/oxford.jpg" width="600" height="800"
+                     alt="Camisa Oxford « Lumière » blanca."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-5">
+                <p class="mb-3.5 flex items-center gap-1.5" aria-hidden="true">
+                  <span class="text-acento" aria-hidden="true">★★★★☆</span>
+                  <span class="text-[13px] text-tinta/70">(94)</span>
+                </p>
+                <p class="sr-only">Valoración: 4 de 5 estrellas, 94 reseñas.</p>
+                <h3 class="text-[17px] leading-snug">
+                  <a href="producto.html?id=oxford-lumiere" class="group-hover:text-acento">Camisa Oxford « Lumière »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                <p class="mt-4 text-[20px] font-extrabold tabular-nums">110&nbsp;€</p>
+                <button type="button" class="btn btn-secundario mt-auto w-full">Añadir a la bolsa</button>
+              </div>
+            </article>
+          </li>
+
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto lg:flex-[1_1_200px]">
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=sastre-vendome" class="block overflow-hidden">
+                <img src="assets/photos/vendome.jpg" width="600" height="800"
+                     alt="Pantalón Sastre « Vendôme » de lana."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-5">
+                <p class="mb-3.5 flex items-center gap-1.5" aria-hidden="true">
+                  <span class="text-acento" aria-hidden="true">★★★★★</span>
+                  <span class="text-[13px] text-tinta/70">(76)</span>
+                </p>
+                <p class="sr-only">Valoración: 5 de 5 estrellas, 76 reseñas.</p>
+                <h3 class="text-[17px] leading-snug">
+                  <a href="producto.html?id=sastre-vendome" class="group-hover:text-acento">Pantalón Sastre « Vendôme »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                <p class="mt-4 text-[20px] font-extrabold tabular-nums">185&nbsp;€</p>
+                <button type="button" class="btn btn-secundario mt-auto w-full">Añadir a la bolsa</button>
+              </div>
+            </article>
+          </li>
+
+          <li class="w-[72%] shrink-0 snap-start sm:w-[46%] md:w-[31%] lg:w-auto lg:flex-[1_1_200px]">
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=cinturon-bastille" class="block overflow-hidden">
+                <img src="assets/photos/cinturon.jpg" width="600" height="800"
+                     alt="Cinturón de cuero « Bastille »."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-5">
+                <p class="mb-3.5 flex items-center gap-1.5" aria-hidden="true">
+                  <span class="text-acento" aria-hidden="true">★★★★☆</span>
+                  <span class="text-[13px] text-tinta/70">(61)</span>
+                </p>
+                <p class="sr-only">Valoración: 4 de 5 estrellas, 61 reseñas.</p>
+                <h3 class="text-[17px] leading-snug">
+                  <a href="producto.html?id=cinturon-bastille" class="group-hover:text-acento">Cinturón Cuero « Bastille »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                <p class="mt-4 text-[20px] font-extrabold tabular-nums">75&nbsp;€</p>
+                <button type="button" class="btn btn-secundario mt-auto w-full">Añadir a la bolsa</button>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ⑥  EDITORIAL / EL TALLER — bloque narrativo a doble columna ──────
+         Foto del atelier en blanco y negro (firma de marca) + texto sobre
+         el saber hacer artesanal. En escritorio: dos columnas. -->
+    <section aria-labelledby="atelier-titulo" class="border-t-2 border-tinta/40 bg-superficie">
+      <div class="contenedor grid items-center gap-x-[clamp(32px,5vw,80px)] gap-y-10 py-16 lg:grid-cols-2">
+
+        <div class="overflow-hidden border-2 border-tinta/40 bg-crudo">
+          <img src="assets/photos/atelier.jpg" width="1000" height="750"
+               alt="Manos de un artesano cosiendo en el atelier de París."
+               class="foto-bn aspect-[3/2]">
+        </div>
+
+        <div>
+          <span class="etiqueta-seccion">El taller</span>
+          <h2 id="atelier-titulo" class="mt-3 text-[clamp(28px,3vw,40px)] leading-[1.08]">
+            Un oficio que se transmite, puntada a puntada.
+          </h2>
+          <p class="mt-6 max-w-[52ch] leading-relaxed text-tinta/85">
+            En el corazón de París, nuestro atelier reúne a artesanos que
+            trabajan cada pieza a mano. Seleccionamos pieles curtidas al
+            vegetal, linos hilados en Francia y lanas peinadas, para que cada
+            prenda envejezca con dignidad.
+          </p>
+          <p class="mt-4 max-w-[52ch] leading-relaxed text-tinta/85">
+            No perseguimos tendencias: perseguimos permanencia. Es la promesa
+            de la Maison desde 1998.
+          </p>
+          <a href="catalogo.html" class="btn btn-primario mt-8">Conoce la colección</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑦  NEWSLETTER — captación por correo ─────────────────────────────
+         Formulario accesible: label sr-only asociado al input, tipo email
+         y botón primario. action="#" porque es una maqueta. -->
+    <section aria-labelledby="newsletter-titulo" class="contenedor py-16">
+      <div class="mx-auto max-w-[560px] border-2 border-tinta/40 bg-superficie p-7 text-center">
+        <span class="etiqueta-seccion">Boletín</span>
+        <h2 id="newsletter-titulo" class="mt-3 text-[clamp(24px,2.6vw,34px)]">
+          Recibe las novedades de la Maison
+        </h2>
+        <p class="mx-auto mt-4 max-w-[48ch] text-tinta/80">
+          Nuevas piezas, ediciones limitadas y aperturas de temporada, sin
+          ruido. Puedes darte de baja cuando quieras.
         </p>
-        <p class="mt-6 text-[13px] uppercase tracking-[0.08em] text-tinta/60">
-          Responsable: Diego Reynoso · Rama <span class="etiqueta etiqueta-neutra">feat/home</span>
-        </p>
-      </section>
 
-    </div>
+        <form action="#" method="post" class="mt-6 flex flex-col gap-3 text-left sm:flex-row">
+          <div class="flex-1">
+            <label for="email-newsletter" class="sr-only">Tu correo electrónico</label>
+            <input id="email-newsletter" name="email" type="email" autocomplete="email" required
+                   placeholder="tu@correo.com" class="campo">
+          </div>
+          <button type="submit" class="btn btn-primario shrink-0">Suscribirme</button>
+        </form>
+
+        <p class="mt-3 text-[13px] text-tinta/70">
+          Al suscribirte aceptas nuestra política de privacidad.
+        </p>
+      </div>
+    </section>
+
+    </div><!-- /guarda overflow-x-clip -->
   </main>
 
 <!-- BEGIN footer (canónico) -->
