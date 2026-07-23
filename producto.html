@@ -2,13 +2,6 @@
 <!-- ════════════════════════════════════════════════════════════════════
      VISTA 3 de 5: PRODUCTO (producto.html) · Maison Lumière
      ────────────────────────────────────────────────────────────────────
-
-     ⚠ ESTADO: PENDIENTE DE CONSTRUIR.
-     El <head>, la navbar y el footer ya están listos y son comunes a
-     las 5 vistas. El <main> está vacío a propósito: ahí trabaja la
-     persona responsable, en su propia rama. Dentro del <main> tienes
-     la lista exacta de requisitos y las piezas del sistema de diseño.
-     Lo que sigue aquí abajo es la REFERENCIA de lo que debe contener.
      ¿Qué es esta página?
      La ficha de un producto. En el prototipo se muestra un artículo
      de referencia (el Derby « Rive Gauche »); en la web real habría
@@ -185,61 +178,197 @@
   <main id="contenido" class="flex-1">
     <div class="contenedor">
 
-      <!-- ════════════════════════════════════════════════════════════════
-           ZONA DE TRABAJO · VISTA 3 DE 5 — VISTA DE PRODUCTO
-           ────────────────────────────────────────────────────────────────
-           Responsable: Por asignar (Franchesco / Inés / Jesús)
-           Rama:        feat/producto
+      <!-- ════════════════ MIGA DE PAN ════════════════
+           Sitúa al cliente: Inicio / Categoría / Producto actual.
+           Además de orientar, es una señal clásica de buen SEO. -->
+      <nav aria-label="Miga de pan" class="flex flex-wrap gap-2.5 py-6 text-[13px] uppercase tracking-[0.08em] text-tinta/70">
+        <a href="index.html" class="hover:text-acento">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <a href="catalogo.html?cat=calzado" class="hover:text-acento">Calzado</a>
+        <span aria-hidden="true">/</span>
+        <span class="text-tinta" aria-current="page">Derby « Rive Gauche »</span>
+      </nav>
 
-           CONSTRUYE AQUÍ DENTRO, entre <main> y </main>.
-           NO toques nada fuera: el <head>, la navbar y el footer son
-           comunes a las 5 vistas y deben quedar idénticos. Si hay que
-           cambiarlos, se habla con el grupo y se cambia en las 5 a la vez
-           (la referencia está en partials/navbar.html y partials/footer.html).
+      <!-- ════════════════ FICHA A DOS COLUMNAS (requisito) ════════════════
+           En escritorio: fotos a la izquierda (≈50 %) e información a la
+           derecha. En móvil, las columnas se apilan una sobre otra. -->
+      <section class="grid gap-x-[clamp(32px,4vw,72px)] gap-y-12 pb-16 pt-2 md:grid-cols-2">
 
-           Requisitos del cliente que DEBE cumplir esta vista:
-           · Diseño en dos columnas: foto a la izquierda ocupando ~la mitad del ancho
-           · Columna derecha: nombre, código o referencia, talla, precio
-           · Columna derecha: selector de cantidad y botón "Agregar al carrito"
-           · Debajo, sección de descripción detallada: materiales
-           · Debajo, sección de descripción detallada: uso recomendado / escenarios
+        <!-- COLUMNA IZQUIERDA: la foto principal y dos detalles.
+             Los "detalles" reutilizan la misma foto con encuadres
+             distintos (object-position), práctica habitual en maquetas -->
+        <div class="flex flex-col gap-4">
+          <figure class="bg-superficie">
+            <img src="assets/photos/derby.jpg" alt="Derby « Rive Gauche » de cuero, vista lateral del par" width="800" height="1067"
+                 fetchpriority="high" decoding="async" class="foto-bn aspect-[3/4] object-left">
+          </figure>
+          <div class="grid grid-cols-2 gap-4">
+            <figure class="bg-superficie">
+              <img src="assets/photos/derby.jpg" alt="Detalle del empeine y los cordones del derby" width="600" height="600"
+                   loading="lazy" decoding="async" class="foto-bn aspect-square object-left-top">
+            </figure>
+            <figure class="bg-superficie">
+              <img src="assets/photos/derby.jpg" alt="Detalle de la suela de cuero cosida" width="600" height="600"
+                   loading="lazy" decoding="async" class="foto-bn aspect-square object-left-bottom">
+            </figure>
+          </div>
+        </div>
 
-           Piezas del sistema de diseño listas para usar
-           (todas definidas en src/input.css, no hace falta inventarlas):
-           · .contenedor         ancho máximo 1200px + márgenes laterales
-           · .etiqueta-seccion   la "ceja" roja en mayúsculas de cada bloque
-           · .separador          línea divisoria gruesa del diseño
-           · .btn + .btn-primario / .btn-secundario / .btn-fantasma
-           · .etiqueta-campo + .campo          formularios
-           · .segmento + .segmento-opcion      filtros y tallas (sin JS)
-           · .etiqueta + .etiqueta-roja / .etiqueta-neutra
-           · .foto-bn            foto en blanco y negro (firma de la marca)
+        <!-- COLUMNA DERECHA: la información principal (requisito) -->
+        <div>
+          <!-- Categoría + etiqueta de novedad -->
+          <div class="mb-3.5 flex items-center gap-3">
+            <span class="text-[13px] uppercase tracking-[0.08em] text-acento-oscuro">Calzado</span>
+            <span class="etiqueta etiqueta-roja">Nuevo</span>
+          </div>
 
-           Colores de marca (usables como bg-, text-, border-):
-           crudo · superficie · tinta · acento · acento-fuerte
-           acento-oscuro · acento-claro · acento-noche · humo · grafito
+          <!-- Nombre del producto -->
+          <h1 class="ml-[-0.04em] text-[clamp(30px,3.4vw,46px)] leading-[1.08] tracking-[-0.015em]">Derby « Rive Gauche »</h1>
 
-           Fotos disponibles en assets/photos/:
-           alpine · atelier · camisas-cat · cinturon · derby · hero
-           lino · mocasin · oxford · vaquero · vendome
+          <!-- Código o referencia del artículo (requisito) -->
+          <p class="mt-2 text-[13px] uppercase tracking-[0.08em] text-tinta/60">Ref. ML-CAL-001</p>
 
-           IMPORTANTE — si usas una clase de Tailwind que no estuviera ya
-           en el proyecto, no se verá hasta que recompiles el CSS:
-               .\build.ps1      (Windows)
-               sh build.sh      (Mac / Linux)
-           ════════════════════════════════════════════════════════════════ -->
-      <section aria-labelledby="titulo-vista" class="py-[clamp(64px,14vh,140px)] text-center">
-        <span class="etiqueta-seccion">Vista 3 de 5</span>
-        <h1 id="titulo-vista" class="mt-4 text-[clamp(34px,6vw,64px)]">Vista de producto</h1>
-        <p class="mx-auto mt-6 max-w-[54ch] text-tinta/70">
-          Vista pendiente de desarrollo. La navbar, el footer y el sistema de
-          diseño ya están listos: solo falta el contenido de esta página.
-        </p>
-        <p class="mt-6 text-[13px] uppercase tracking-[0.08em] text-tinta/60">
-          Responsable: Por asignar (Franchesco / Inés / Jesús) · Rama <span class="etiqueta etiqueta-neutra">feat/producto</span>
-        </p>
+          <!-- Precio -->
+          <p class="mt-5 text-[24px] font-extrabold tabular-nums">420,00 €</p>
+
+          <!-- Resumen del producto -->
+          <p class="mt-6 max-w-[52ch] text-[15.5px] leading-[1.75] text-tinta/80">
+            Derby de cuero de becerro con construcción Blake y suela de cuero.
+            Un clásico del vestidor parisino, sin ornamento.
+          </p>
+
+          <!-- Formulario de compra: talla + cantidad + añadir al carrito.
+               Sin JavaScript: el botón envía a la vista carrito. -->
+          <form action="carrito.html" method="get" class="mt-8">
+
+            <!-- Selector de talla (requisito). Radios ocultos: la talla
+                 elegida se resalta en rojo solo con CSS -->
+            <span class="etiqueta-campo" id="talla-titulo">Talla</span>
+            <div class="segmento" role="radiogroup" aria-labelledby="talla-titulo">
+              <label class="segmento-opcion min-w-11"><input type="radio" name="talla" value="40">40</label>
+              <label class="segmento-opcion min-w-11"><input type="radio" name="talla" value="41">41</label>
+              <label class="segmento-opcion min-w-11"><input type="radio" name="talla" value="42" checked>42</label>
+              <label class="segmento-opcion min-w-11"><input type="radio" name="talla" value="43">43</label>
+              <label class="segmento-opcion min-w-11"><input type="radio" name="talla" value="44">44</label>
+              <label class="segmento-opcion min-w-11"><input type="radio" name="talla" value="45">45</label>
+            </div>
+
+            <!-- Cantidad (requisito) + botón de añadir (requisito) -->
+            <div class="mt-6 flex flex-wrap items-end gap-3">
+              <div>
+                <label class="etiqueta-campo" for="cantidad">Cantidad</label>
+                <input id="cantidad" name="cantidad" type="number" value="1" min="1" max="9"
+                       class="campo w-24 tabular-nums">
+              </div>
+              <button type="submit" class="btn btn-primario h-[46px] px-7">Añadir al carrito — 420,00 €</button>
+            </div>
+          </form>
+
+          <!-- Datos rápidos: material, confección y envío -->
+          <div class="mt-10">
+            <div class="grid grid-cols-[120px_1fr] gap-4 border-t-2 border-tinta/40 py-4 sm:grid-cols-[140px_1fr]">
+              <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Material</p>
+              <p class="text-[14px]">Cuero de becerro, curtido vegetal</p>
+            </div>
+            <div class="grid grid-cols-[120px_1fr] gap-4 border-t border-tinta/20 py-4 sm:grid-cols-[140px_1fr]">
+              <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Confección</p>
+              <p class="text-[14px]">Romans-sur-Isère, Francia</p>
+            </div>
+            <div class="grid grid-cols-[120px_1fr] gap-4 border-y border-tinta/20 border-b-2 border-b-tinta/40 py-4 sm:grid-cols-[140px_1fr]">
+              <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Envío</p>
+              <p class="text-[14px]">Gratuito a partir de 150 €. Devoluciones sin coste durante 30 días.</p>
+            </div>
+          </div>
+        </div>
       </section>
 
+      <!-- ════════════════ DESCRIPCIÓN DETALLADA (requisito) ════════════════
+           Debajo de la ficha: los materiales al completo y los usos o
+           escenarios recomendados para llevar la pieza. -->
+      <section aria-labelledby="descripcion-titulo" class="border-t-2 border-tinta/40 pb-16 pt-10">
+        <span class="etiqueta-seccion mb-3.5">Descripción detallada</span>
+        <h2 id="descripcion-titulo" class="mb-10 text-[clamp(24px,2.6vw,34px)]">Hecho para durar décadas, no temporadas.</h2>
+
+        <div class="grid gap-x-[clamp(32px,5vw,96px)] gap-y-10 md:grid-cols-2">
+          <!-- Bloque 1: materiales -->
+          <div>
+            <h3 class="text-[17px]">Materiales</h3>
+            <ul class="mt-4 flex flex-col gap-2.5 text-[15px] leading-relaxed text-tinta/85">
+              <li class="border-t border-tinta/20 pt-2.5">Empeine de cuero de becerro francés, curtido vegetal en Puy-de-Dôme.</li>
+              <li class="border-t border-tinta/20 pt-2.5">Suela de cuero cosida con construcción Blake: flexible y recraftable.</li>
+              <li class="border-t border-tinta/20 pt-2.5">Forro de piel de cordero y plantilla acolchada sin marca vista.</li>
+              <li class="border-t border-tinta/20 pt-2.5">Cordones encerados de algodón, repuesto incluido.</li>
+            </ul>
+          </div>
+          <!-- Bloque 2: cuándo llevarlo (usos y escenarios) -->
+          <div>
+            <h3 class="text-[17px]">Cuándo llevarlo</h3>
+            <ul class="mt-4 flex flex-col gap-2.5 text-[15px] leading-relaxed text-tinta/85">
+              <li class="border-t border-tinta/20 pt-2.5"><strong>Oficina:</strong> con el Pantalón Sastre « Vendôme » y camisa oxford, el uniforme parisino de diario.</li>
+              <li class="border-t border-tinta/20 pt-2.5"><strong>Cena o evento:</strong> el acabado liso, sin ornamento, funciona con traje completo.</li>
+              <li class="border-t border-tinta/20 pt-2.5"><strong>Fin de semana:</strong> rompe la formalidad con el Vaquero « Belleville » remangado.</li>
+              <li class="border-t border-tinta/20 pt-2.5"><strong>Cuidado:</strong> cepillado semanal y crema neutra una vez al mes; evita la lluvia intensa.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════════════ COMPLETA EL LOOK ════════════════
+           Venta cruzada: tres piezas que combinan con el derby.
+           Mismo formato de tarjeta que en el catálogo. -->
+      <section aria-labelledby="look-titulo" class="border-t-2 border-tinta/40 pb-20 pt-10">
+        <div class="mb-9 flex flex-wrap items-end justify-between gap-4">
+          <h2 id="look-titulo" class="text-[clamp(24px,2.6vw,34px)]">Completa el look</h2>
+          <a href="catalogo.html" class="btn btn-fantasma">Ver todo el catálogo →</a>
+        </div>
+        <ul class="grid grid-cols-2 gap-x-[clamp(20px,2.5vw,32px)] gap-y-10 md:grid-cols-3">
+          <li>
+            <article class="group">
+              <a href="producto.html?id=oxford-lumiere" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/oxford.jpg" alt="Camisa Oxford « Lumière » de algodón" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Camisa Oxford « Lumière »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">160,00 €</p>
+                </div>
+                <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+              </a>
+            </article>
+          </li>
+          <li>
+            <article class="group">
+              <a href="producto.html?id=sastre-vendome" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/vendome.jpg" alt="Pantalón Sastre « Vendôme » de lana fría" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Pantalón Sastre « Vendôme »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">260,00 €</p>
+                </div>
+                <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+              </a>
+            </article>
+          </li>
+          <li>
+            <article class="group">
+              <a href="producto.html?id=cinturon-bastille" class="flex flex-col gap-2.5">
+                <div class="overflow-hidden bg-superficie">
+                  <img src="assets/photos/cinturon.jpg" alt="Cinturón Cuero « Bastille » con hebilla de latón" width="600" height="800"
+                       loading="lazy" decoding="async" class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+                </div>
+                <div class="flex items-baseline justify-between gap-3">
+                  <h3 class="text-[17px] leading-tight group-hover:text-acento">Cinturón Cuero « Bastille »</h3>
+                  <p class="whitespace-nowrap text-[15px] tabular-nums">130,00 €</p>
+                </div>
+                <p class="text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+              </a>
+            </article>
+          </li>
+        </ul>
+      </section>
     </div>
   </main>
 
