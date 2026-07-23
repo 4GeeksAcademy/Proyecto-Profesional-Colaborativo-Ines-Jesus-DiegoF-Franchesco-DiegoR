@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="assets/img/banner-maison-lumiere.jpg"
+       alt="Maison Lumière — prototipo de e-commerce premium de calzado. Proyecto académico del bootcamp de AI Engineering de 4Geeks Academy."
+       width="100%">
+</p>
+
 # Maison Lumière · Prototipo de tienda online
 
 Prototipo visual y funcional de la tienda online de **Maison Lumière**, una marca
