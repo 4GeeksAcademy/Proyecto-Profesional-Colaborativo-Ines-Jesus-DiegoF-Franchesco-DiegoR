@@ -1,289 +1,300 @@
 <!doctype html>
-<!-- ════════════════════════════════════════════════════════════════════
-     VISTA 5 de 5: CHECKOUT (checkout.html) · Maison Lumière
-     ────────────────────────────────────────────────────────────────────
-
-     ⚠ ESTADO: PENDIENTE DE CONSTRUIR.
-     El <head>, la navbar y el footer ya están listos y son comunes a
-     las 5 vistas. El <main> está vacío a propósito: ahí trabaja la
-     persona responsable, en su propia rama. Dentro del <main> tienes
-     la lista exacta de requisitos y las piezas del sistema de diseño.
-     Lo que sigue aquí abajo es la REFERENCIA de lo que debe contener.
-     ¿Qué es esta página?
-     El formulario de pago, con el flujo en 3 pasos que pide el encargo:
-       Paso 1 · Datos personales
-       Paso 2 · Dirección de envío
-       Paso 3 · Pago con tarjeta
-     En el prototipo los tres pasos se presentan en una sola página,
-     uno debajo de otro y numerados, para que el cliente pueda evaluar
-     el flujo completo de un vistazo. En desarrollo real cada paso se
-     validaría antes de mostrar el siguiente.
-
-     Buenas prácticas aplicadas al formulario:
-     · <fieldset> y <legend>: agrupan cada paso con su título. Es el
-       HTML semántico correcto para formularios largos.
-     · <label> unido a cada campo por su "for": al tocar la etiqueta
-       se activa el campo, y los lectores de pantalla lo anuncian bien.
-     · autocomplete: permite al navegador rellenar solo el nombre, la
-       dirección o la tarjeta guardados del usuario.
-     · inputmode y maxlength: en el móvil abre el teclado numérico
-       donde toca y limita la longitud de tarjeta, caducidad y CVC.
-     · required: el navegador avisa de los campos obligatorios sin
-       necesidad de JavaScript.
-
-     SEO: como el carrito, esta página es privada → "noindex".
-     ════════════════════════════════════════════════════════════════════ -->
 <html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout | Maison Lumiere</title>
+    <meta
+      name="description"
+      content="Finaliza tu compra en Maison Lumiere con un proceso de checkout claro y seguro."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#f8fafc" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-800">
+    <a
+      href="#contenido-principal"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-slate-900 focus:px-4 focus:py-2 focus:text-white"
+      >Saltar al contenido principal</a
+    >
 
-  <title>Finalizar compra | Maison Lumière</title>
-  <meta name="description" content="Completa tu pedido en Maison Lumière: datos personales, dirección de envío y pago con tarjeta.">
-  <!-- Página privada del usuario: no debe aparecer en buscadores -->
-  <meta name="robots" content="noindex, nofollow">
-
-  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
-  <meta name="theme-color" content="#f3f2f2">
-
-  <!-- Tipografía Archivo + CSS compilado de Tailwind -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
-</head>
-
-<body class="flex min-h-screen flex-col">
-
-<!-- BEGIN navbar (canónico) -->
-
-<!-- Enlace de accesibilidad: invisible salvo que se navegue con la
-     tecla Tab; permite saltar directo al contenido principal -->
-<a href="#contenido"
-   class="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:bg-tinta focus:px-4 focus:py-2 focus:text-crudo">
-  Saltar al contenido
-</a>
-
-<!-- Barra de promoción: mensaje comercial fijo en todas las vistas -->
-<p class="border-b border-tinta/20 bg-crudo px-[clamp(20px,5vw,72px)] py-2 text-[13px] uppercase tracking-[0.08em] text-tinta/70">
-  Envío gratuito a partir de 150 € — devoluciones en 30 días
-</p>
-
-<header class="border-b-2 border-tinta/40 bg-crudo">
-  <div class="contenedor flex items-center gap-6 py-3.5">
-
-    <!-- Logo: monograma ML dibujado en SVG + nombre de la marca.
-         mr-auto empuja el resto de la barra hacia la derecha -->
-    <a href="index.html" class="mr-auto flex items-center gap-3" aria-label="Maison Lumière, ir al inicio">
-      <svg width="26" height="26" viewBox="0 0 48 48" aria-hidden="true" fill="none"
-           stroke="var(--color-acento)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
-        <path d="M8 34 L8 14 L16 26 L24 14 L24 34"/>
-        <path d="M30 14 L30 34 L40 34"/>
-      </svg>
-      <span class="text-[15px] font-extrabold uppercase tracking-[0.14em]">Maison Lumière</span>
-    </a>
-
-    <!-- Buscador (visible solo en escritorio; en móvil va dentro del menú) -->
-    <form role="search" action="catalogo.html" method="get" class="hidden lg:block">
-      <label for="buscador" class="sr-only">Buscar productos</label>
-      <input id="buscador" name="q" type="search" placeholder="Buscar en el catálogo" class="campo w-[220px] py-2">
-    </form>
-
-    <!-- Navegación principal + menú de cuenta (escritorio) -->
-    <nav aria-label="Principal" class="hidden items-center gap-6 text-[14px] lg:flex">
-      <a data-nav="inicio" href="index.html" class="hover:text-acento">Inicio</a>
-      <a data-nav="catalogo" href="catalogo.html" class="hover:text-acento">Catálogo</a>
-      <a href="#" class="flex items-center gap-1.5 hover:text-acento" title="Tu cuenta (maqueta sin funcionalidad)">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="square" aria-hidden="true">
-          <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
-        </svg>
-        Cuenta
-      </a>
-    </nav>
-
-    <!-- Carrito: visible SIEMPRE (móvil y escritorio), con contador
-         de artículos. El "4" es el estado de ejemplo del prototipo:
-         coincide con las unidades de la vista carrito.html -->
-    <a data-nav="carrito" href="carrito.html" class="flex items-center gap-2 text-[14px] hover:text-acento"
-       aria-label="Carrito, 4 artículos">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-           stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true">
-        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
-        <path d="M3 6h18"/>
-        <path d="M16 10a4 4 0 0 1-8 0"/>
-      </svg>
-      <span class="hidden sm:inline">Carrito</span>
-      <span aria-hidden="true"
-            class="inline-flex h-[18px] min-w-[18px] items-center justify-center bg-acento-fuerte px-1 text-[11px] font-semibold tabular-nums text-white">4</span>
-    </a>
-
-    <!-- Menú móvil: <details> abre y cierra el panel sin JavaScript -->
-    <details class="relative lg:hidden">
-      <summary class="cursor-pointer p-2" aria-label="Abrir menú de navegación">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-             stroke-linecap="square" aria-hidden="true">
-          <path d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </summary>
-      <div class="absolute right-0 z-40 mt-3 w-64 border-2 border-tinta/40 bg-crudo p-5 shadow-lg">
-        <form role="search" action="catalogo.html" method="get" class="mb-4">
-          <label for="buscador-movil" class="sr-only">Buscar productos</label>
-          <input id="buscador-movil" name="q" type="search" placeholder="Buscar…" class="campo py-2">
-        </form>
-        <nav aria-label="Principal (móvil)" class="flex flex-col gap-4 text-[14px]">
-          <a data-nav="inicio" href="index.html" class="hover:text-acento">Inicio</a>
-          <a data-nav="catalogo" href="catalogo.html" class="hover:text-acento">Catálogo</a>
-          <a data-nav="carrito" href="carrito.html" class="hover:text-acento">Carrito</a>
-          <a href="#" class="hover:text-acento">Cuenta</a>
+    <header class="border-b border-slate-200 bg-white">
+      <div
+        class="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8"
+      >
+        <a
+          href="index.html"
+          class="text-xl font-bold tracking-tight text-slate-900"
+          >Maison Lumiere</a
+        >
+        <nav aria-label="Navegacion principal">
+          <a
+            href="carrito.html"
+            class="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-100"
+            >Volver al Carrito</a
+          >
         </nav>
       </div>
-    </details>
-  </div>
-</header>
-<!-- END navbar (canónico) -->
+    </header>
 
-  <main id="contenido" class="flex-1">
-    <div class="contenedor">
-
-      <!-- ════════════════════════════════════════════════════════════════
-           ZONA DE TRABAJO · VISTA 5 DE 5 — FORMULARIO DE PAGO
-           ────────────────────────────────────────────────────────────────
-           Responsable: Por asignar (Franchesco / Inés / Jesús)
-           Rama:        feat/checkout
-
-           CONSTRUYE AQUÍ DENTRO, entre <main> y </main>.
-           NO toques nada fuera: el <head>, la navbar y el footer son
-           comunes a las 5 vistas y deben quedar idénticos. Si hay que
-           cambiarlos, se habla con el grupo y se cambia en las 5 a la vez
-           (la referencia está en partials/navbar.html y partials/footer.html).
-
-           Requisitos del cliente que DEBE cumplir esta vista:
-           · Flujo en 3 pasos, visualmente diferenciados
-           · Paso 1: datos personales
-           · Paso 2: dirección de entrega
-           · Paso 3: pago con tarjeta (datos de tarjeta)
-           · Usa <fieldset> y <legend> por paso, y <label> en todos los campos
-
-           Piezas del sistema de diseño listas para usar
-           (todas definidas en src/input.css, no hace falta inventarlas):
-           · .contenedor         ancho máximo 1200px + márgenes laterales
-           · .etiqueta-seccion   la "ceja" roja en mayúsculas de cada bloque
-           · .separador          línea divisoria gruesa del diseño
-           · .btn + .btn-primario / .btn-secundario / .btn-fantasma
-           · .etiqueta-campo + .campo          formularios
-           · .segmento + .segmento-opcion      filtros y tallas (sin JS)
-           · .etiqueta + .etiqueta-roja / .etiqueta-neutra
-           · .foto-bn            foto en blanco y negro (firma de la marca)
-
-           Colores de marca (usables como bg-, text-, border-):
-           crudo · superficie · tinta · acento · acento-fuerte
-           acento-oscuro · acento-claro · acento-noche · humo · grafito
-
-           Fotos disponibles en assets/photos/:
-           alpine · atelier · camisas-cat · cinturon · derby · hero
-           lino · mocasin · oxford · vaquero · vendome
-
-           IMPORTANTE — si usas una clase de Tailwind que no estuviera ya
-           en el proyecto, no se verá hasta que recompiles el CSS:
-               .\build.ps1      (Windows)
-               sh build.sh      (Mac / Linux)
-           ════════════════════════════════════════════════════════════════ -->
-      <section aria-labelledby="titulo-vista" class="py-[clamp(64px,14vh,140px)] text-center">
-        <span class="etiqueta-seccion">Vista 5 de 5</span>
-        <h1 id="titulo-vista" class="mt-4 text-[clamp(34px,6vw,64px)]">Formulario de pago</h1>
-        <p class="mx-auto mt-6 max-w-[54ch] text-tinta/70">
-          Vista pendiente de desarrollo. La navbar, el footer y el sistema de
-          diseño ya están listos: solo falta el contenido de esta página.
-        </p>
-        <p class="mt-6 text-[13px] uppercase tracking-[0.08em] text-tinta/60">
-          Responsable: Por asignar (Franchesco / Inés / Jesús) · Rama <span class="etiqueta etiqueta-neutra">feat/checkout</span>
+    <main id="contenido-principal" class="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <section aria-labelledby="titulo-checkout" class="mb-8">
+        <p class="text-sm font-semibold uppercase tracking-wider text-slate-500">Checkout</p>
+        <h1 id="titulo-checkout" class="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+          Finaliza tu pedido
+        </h1>
+        <p class="mt-3 max-w-2xl text-sm text-slate-600 sm:text-base">
+          Completa tus datos de envio y pago para confirmar tu compra de forma rapida y segura.
         </p>
       </section>
 
-    </div>
-  </main>
+      <section class="grid gap-8 lg:grid-cols-3" aria-label="Proceso de checkout">
+        <div class="lg:col-span-2">
+          <form action="#" method="post" class="space-y-6">
+            <fieldset class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <legend class="px-2 text-base font-semibold text-slate-900">Paso 1: Datos Personales</legend>
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="nombre" class="mb-2 block text-sm font-medium text-slate-700">Nombre</label>
+                  <input
+                    id="nombre"
+                    name="nombre"
+                    type="text"
+                    autocomplete="given-name"
+                    required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-500"
+                    placeholder="Tu nombre"
+                  />
+                </div>
+                <div>
+                  <label for="apellidos" class="mb-2 block text-sm font-medium text-slate-700">Apellidos</label>
+                  <input
+                    id="apellidos"
+                    name="apellidos"
+                    type="text"
+                    autocomplete="family-name"
+                    required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-500"
+                    placeholder="Tus apellidos"
+                  />
+                </div>
+                <div>
+                  <label for="email" class="mb-2 block text-sm font-medium text-slate-700">Email</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-500"
+                    placeholder="correo@ejemplo.com"
+                  />
+                </div>
+                <div>
+                  <label for="telefono" class="mb-2 block text-sm font-medium text-slate-700">Telefono</label>
+                  <input
+                    id="telefono"
+                    name="telefono"
+                    type="tel"
+                    autocomplete="tel"
+                    required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-500"
+                    placeholder="+34 600 000 000"
+                  />
+                </div>
+              </div>
+            </fieldset>
 
-<!-- BEGIN footer (canónico) -->
-<footer class="mt-20 border-t-2 border-tinta/40 bg-crudo">
-  <div class="contenedor grid grid-cols-1 gap-x-[clamp(24px,3vw,48px)] gap-y-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
+            <fieldset class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <legend class="px-2 text-base font-semibold text-slate-900">Paso 2: Direccion de Entrega</legend>
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div class="sm:col-span-2">
+                  <label for="direccion" class="mb-2 block text-sm font-medium text-slate-700"
+                    >Direccion completa</label
+                  >
+                  <input
+                    id="direccion"
+                    name="direccion"
+                    type="text"
+                    autocomplete="street-address"
+                    required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-500"
+                    placeholder="Calle, numero, piso, referencia"
+                  />
+                </div>
+                <div>
+                  <label for="ciudad" class="mb-2 block text-sm font-medium text-slate-700">Ciudad</label>
+                  <input
+                    id="ciudad"
+                    name="ciudad"
+                    type="text"
+                    autocomplete="address-level2"
+                    required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-500"
+                    placeholder="Tu ciudad"
+                  />
+                </div>
+                <div>
+                  <label for="codigo-postal" class="mb-2 block text-sm font-medium text-slate-700"
+                    >Codigo Postal</label
+                  >
+                  <input
+                    id="codigo-postal"
+                    name="codigo-postal"
+                    type="text"
+                    autocomplete="postal-code"
+                    required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-500"
+                    placeholder="28001"
+                  />
+                </div>
+                <div class="sm:col-span-2">
+                  <label for="pais" class="mb-2 block text-sm font-medium text-slate-700">Pais</label>
+                  <select
+                    id="pais"
+                    name="pais"
+                    required
+                    class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-500"
+                  >
+                    <option value="">Selecciona un pais</option>
+                    <option value="es">Espana</option>
+                    <option value="mx">Mexico</option>
+                    <option value="ar">Argentina</option>
+                    <option value="co">Colombia</option>
+                    <option value="cl">Chile</option>
+                    <option value="pe">Peru</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
 
-    <!-- Columna 1: la marca -->
-    <div>
-      <svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true" fill="none"
-           stroke="var(--color-acento)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
-        <path d="M8 34 L8 14 L16 26 L24 14 L24 34"/>
-        <path d="M30 14 L30 34 L40 34"/>
-      </svg>
-      <p class="mt-4 max-w-[26ch] text-[14px] leading-relaxed text-tinta/75">
-        Prêt-à-porter hecho en Francia desde 1998. París, Rue de la Lumière 12.
-      </p>
-    </div>
+            <fieldset class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <legend class="px-2 text-base font-semibold text-slate-900">Paso 3: Pago con Tarjeta</legend>
+              <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div class="sm:col-span-2">
+                  <label for="nombre-tarjeta" class="mb-2 block text-sm font-medium text-slate-700"
+                    >Nombre en la tarjeta</label
+                  >
+                  <input
+                    id="nombre-tarjeta"
+                    name="nombre-tarjeta"
+                    type="text"
+                    autocomplete="cc-name"
+                    required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-500"
+                    placeholder="Nombre como aparece en la tarjeta"
+                  />
+                </div>
+                <div class="sm:col-span-2">
+                  <label for="numero-tarjeta" class="mb-2 block text-sm font-medium text-slate-700"
+                    >Numero de tarjeta</label
+                  >
+                  <input
+                    id="numero-tarjeta"
+                    name="numero-tarjeta"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="cc-number"
+                    required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-500"
+                    placeholder="1234 5678 9012 3456"
+                  />
+                </div>
+                <div>
+                  <label for="expiracion" class="mb-2 block text-sm font-medium text-slate-700"
+                    >Expiracion (MM/AA)</label
+                  >
+                  <input
+                    id="expiracion"
+                    name="expiracion"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="cc-exp"
+                    required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-500"
+                    placeholder="MM/AA"
+                  />
+                </div>
+                <div>
+                  <label for="cvc" class="mb-2 block text-sm font-medium text-slate-700">CVC/CVV</label>
+                  <input
+                    id="cvc"
+                    name="cvc"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="cc-csc"
+                    required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-900 outline-none ring-0 transition focus:border-slate-500"
+                    placeholder="123"
+                  />
+                </div>
+              </div>
+            </fieldset>
 
-    <!-- Columna 2: categorías de la tienda (los enlaces llevan a la
-         vista catálogo; ?cat= indica la categoría preseleccionada) -->
-    <nav aria-label="Categorías" class="flex flex-col gap-2.5">
-      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Categorías</h2>
-      <a href="catalogo.html?cat=calzado" class="text-[14px] hover:text-acento">Calzado</a>
-      <a href="catalogo.html?cat=camisas" class="text-[14px] hover:text-acento">Camisas</a>
-      <a href="catalogo.html?cat=pantalones" class="text-[14px] hover:text-acento">Pantalones</a>
-      <a href="catalogo.html?cat=accesorios" class="text-[14px] hover:text-acento">Accesorios</a>
-    </nav>
+            <button
+              type="submit"
+              class="w-full rounded-xl bg-slate-900 px-6 py-3.5 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-slate-700"
+            >
+              Pagar y Confirmar Pedido
+            </button>
+          </form>
+        </div>
 
-    <!-- Columna 3: enlaces legales (en el prototipo apuntan a "#"
-         porque esas páginas aún no forman parte del encargo) -->
-    <nav aria-label="Legal" class="flex flex-col gap-2.5">
-      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Legal</h2>
-      <a href="#" class="text-[14px] hover:text-acento">Términos y condiciones</a>
-      <a href="#" class="text-[14px] hover:text-acento">Política de privacidad</a>
-      <a href="#" class="text-[14px] hover:text-acento">Sobre la marca</a>
-    </nav>
+        <aside
+          aria-labelledby="titulo-resumen"
+          class="h-fit rounded-xl border border-slate-200 bg-white p-6 shadow-sm lg:sticky lg:top-6"
+        >
+          <h2 id="titulo-resumen" class="text-lg font-semibold text-slate-900">Resumen del Pedido</h2>
+          <dl class="mt-5 space-y-3 text-sm text-slate-700">
+            <div class="flex items-center justify-between">
+              <dt>Subtotal</dt>
+              <dd class="font-medium text-slate-900">89,99 EUR</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt>Envio</dt>
+              <dd class="font-medium text-emerald-700">Gratis</dd>
+            </div>
+            <div class="flex items-center justify-between">
+              <dt>Impuestos</dt>
+              <dd class="font-medium text-slate-900">18,90 EUR</dd>
+            </div>
+            <div class="border-t border-slate-200 pt-3">
+              <div class="flex items-center justify-between">
+                <dt class="text-base font-semibold text-slate-900">Total</dt>
+                <dd class="text-base font-bold text-slate-900">108,89 EUR</dd>
+              </div>
+            </div>
+          </dl>
+        </aside>
+      </section>
+    </main>
 
-    <!-- Columna 4: contacto. <address> es la etiqueta HTML pensada
-         justo para esto (datos de contacto), buena señal para el SEO -->
-    <div class="flex flex-col gap-2.5">
-      <h2 class="mb-1.5 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">Contacto</h2>
-      <address class="flex flex-col gap-2.5 not-italic">
-        <p class="text-[14px] leading-relaxed">12 Rue de la Lumière<br>75008 París, Francia</p>
-        <a href="mailto:contact@maisonlumiere.example" class="text-[14px] hover:text-acento">contact@maisonlumiere.example</a>
-        <a href="tel:+33100000000" class="text-[14px] tabular-nums hover:text-acento">+33 1 00 00 00 00</a>
-      </address>
-    </div>
-  </div>
+    <footer class="mt-16 border-t border-slate-200 bg-white">
+      <div class="mx-auto grid w-full max-w-7xl gap-8 px-4 py-10 sm:grid-cols-2 lg:grid-cols-3 lg:px-8">
+        <section aria-labelledby="legal" class="space-y-2">
+          <h2 id="legal" class="text-sm font-semibold uppercase tracking-wider text-slate-900">Legal</h2>
+          <p class="text-sm text-slate-600">Terminos y condiciones</p>
+          <p class="text-sm text-slate-600">Politica de privacidad</p>
+          <p class="text-sm text-slate-600">Aviso legal</p>
+        </section>
 
-  <!-- Línea final con el copyright -->
-  <div class="contenedor flex flex-col gap-2 border-t border-tinta/20 py-6 text-[13px] text-tinta/60 sm:flex-row sm:justify-between">
-    <p>© 2026 Maison Lumière. Todos los derechos reservados.</p>
-    <p>Hecho en Francia · Prototipo académico — 4Geeks Academy</p>
-  </div>
-</footer>
+        <section aria-labelledby="categorias" class="space-y-2">
+          <h2 id="categorias" class="text-sm font-semibold uppercase tracking-wider text-slate-900">
+            Categorias
+          </h2>
+          <p class="text-sm text-slate-600">Mujer</p>
+          <p class="text-sm text-slate-600">Hombre</p>
+          <p class="text-sm text-slate-600">Accesorios</p>
+        </section>
 
-<!-- Datos estructurados Schema.org (SEO): describen la empresa en un
-     formato que los buscadores leen directamente. No se ve en pantalla. -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Maison Lumière",
-  "url": "https://maisonlumiere.example/",
-  "logo": "https://maisonlumiere.example/assets/img/logo.svg",
-  "description": "Marca francesa de moda: prêt-à-porter, calzado y accesorios confeccionados en Francia desde 1998.",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "12 Rue de la Lumière",
-    "postalCode": "75008",
-    "addressLocality": "París",
-    "addressCountry": "FR"
-  },
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+33-1-00-00-00-00",
-    "contactType": "customer service",
-    "email": "contact@maisonlumiere.example"
-  }
-}
-</script>
-<!-- END footer (canónico) -->
-
-</body>
+        <section aria-labelledby="copyright" class="space-y-2">
+          <h2 id="copyright" class="text-sm font-semibold uppercase tracking-wider text-slate-900">Maison Lumiere</h2>
+          <p class="text-sm text-slate-600">Moda francesa con diseno funcional y elegante.</p>
+          <p class="text-sm text-slate-500">Copyright 2026 Maison Lumiere. Todos los derechos reservados.</p>
+        </section>
+      </div>
+    </footer>
+  </body>
 </html>
