@@ -23,11 +23,11 @@ francesa de moda (cliente ficticio). Proyecto del bootcamp de 4Geeks Academy —
 | Vista | Archivo | Responsable | Rama | Estado |
 | --- | --- | --- | --- | --- |
 | Sistema de diseño, navbar y footer | `src/`, `partials/` | Franchesco | — | ✅ en `main` |
-| 1 · Home | `index.html` | Diego Reynoso | `feat/home` | 🟡 en revisión (PR #4) |
+| 1 · Home | `index.html` | Diego Reynoso | `feat/home` | ✅ en `main` (PR #4) |
 | 2 · Catálogo | `catalogo.html` | Diego Fuentes | `feat/catalogo` | ✅ en `main` (PR #5) |
 | 3 · Vista de producto | `producto.html` | Franchesco | `feat/producto` | ✅ en `main` (PR #3) |
-| 4 · Carrito | `carrito.html` | Inés | `feat/carrito` | ⬜ sin empezar |
-| 5 · Checkout | `checkout.html` | Jesús | `feat/checkout` | ⬜ sin empezar |
+| 4 · Carrito | `carrito.html` | Inés | `feat/carrito` | ✅ en `main` ⚠️ push directo, ver `NOTAS-TECNICAS.md` |
+| 5 · Checkout | `checkout.html` | Jesús | `feat/checkout` | ✅ en `main` (PR #7, reescrito → sistema de diseño) |
 
 > Esta tabla es el estado oficial del proyecto. Se actualiza después de cada
 > merge a `main` (ver [Mantenimiento del README](#mantenimiento-del-readme)).
@@ -266,12 +266,13 @@ copiado en las 5 páginas. Si cambia, se cambia en el partial y se replica.
 - [x] Navbar y footer reutilizados e idénticos en todas las vistas
 - [x] Estilos compartidos (Tailwind + `src/input.css`)
 - [x] SEO: HTML semántico, `title` y `meta description` únicos, Schema.org
-- [ ] Contenido de las 5 vistas según los requisitos del cliente — **2 de 5**
-      (catálogo y producto en `main`; home en revisión; faltan carrito y checkout)
+- [x] Contenido de las 5 vistas según los requisitos del cliente — **5 de 5**
+      (todas en `main`; checkout reescrito para usar el sistema de diseño)
 - [ ] Responsive verificado en móvil (390 px), tablet (768 px) y escritorio (1366 px)
-      — hecho en catálogo, producto y home
+      — hecho en catálogo, producto y home; falta comprobar carrito y checkout
 - [ ] Git: una rama por persona, commits repartidos y Pull Requests revisados
-      — ojo, hay PRs mergeados **sin review escrita**: no dejan evidencia
+      — ojo, hay PRs mergeados **sin review escrita** y un push directo a `main`
+      (carrito). Todos los fallos están documentados en `NOTAS-TECNICAS.md`
 
 ---
 
