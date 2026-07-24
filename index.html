@@ -3,15 +3,6 @@
      VISTA 1 de 5: HOME (index.html) · Maison Lumière
      ────────────────────────────────────────────────────────────────────
 
-     ⚠ ESTADO: PENDIENTE DE CONSTRUIR.
-     El <head>, la navbar y el footer ya están listos y son comunes a
-     las 5 vistas. El <main> está vacío a propósito: ahí trabaja la
-     persona responsable, en su propia rama. Dentro del <main> tienes
-     la lista exacta de requisitos y las piezas del sistema de diseño.
-     Lo que sigue aquí abajo es la REFERENCIA de lo que debe contener.
-     ¿Qué es esta página?
-     La portada de la tienda online. Es lo primero que ve el cliente.
-
      ¿Cómo está construida?
      Solo con HTML semántico y clases de Tailwind CSS (sin JavaScript
      ni frameworks, tal y como exige el encargo). Las clases tipo
@@ -28,9 +19,6 @@
        7. Bloque editorial sobre el taller
        8. Suscripción a la newsletter
        9. Footer con categorías, legal y contacto     (requisito)
-
-     Este archivo nace de fusionar los prototipos "maison-lumiere"
-     (base técnica) y "maison-lumiere-v2" (diseño y fotos).
      ════════════════════════════════════════════════════════════════════ -->
 <html lang="es">
 <head>
@@ -190,7 +178,7 @@
          overflow-x-clip solo recorta el eje X: no crea contenedor de scroll,
          no afecta al scroll vertical ni a los carruseles (que ya deslizan
          con su propio overflow-x-auto). -->
-    <div class="overflow-x-clip">
+    <div class="relative overflow-x-clip">
 
     <!-- ①  HERO — Campaña Printemps-Été ─────────────────────────────────
          Texto a la izquierda, fotografía de campaña a la derecha. En móvil
@@ -204,7 +192,7 @@
           <h1 id="hero-titulo" class="mt-4 text-[clamp(42px,5.6vw,80px)] leading-[1.06]">
             El vestuario francés, depurado a lo esencial.
           </h1>
-          <p class="mt-6 max-w-[52ch] text-[17px] leading-relaxed text-tinta/85">
+          <p class="mt-6 max-w-[60ch] text-[17px] leading-relaxed text-tinta/85">
             Prendas confeccionadas en nuestro atelier de París y pensadas para
             durar: líneas sobrias, materiales nobles y el saber hacer de la
             Maison desde 1998.
@@ -279,7 +267,7 @@
           <a href="catalogo.html?cat=camisas" class="group block">
             <div class="overflow-hidden border-2 border-tinta/40 bg-superficie">
               <img src="assets/photos/camisas-cat.jpg" width="600" height="750"
-                   alt="Camisas dobladas de la colección."
+                   alt="Modelo con una camisa blanca de la colección."
                    class="foto-bn aspect-[4/5] transition-transform duration-500 group-hover:scale-[1.03]">
             </div>
             <h3 class="mt-3.5 text-[20px] group-hover:text-acento">Camisas</h3>
