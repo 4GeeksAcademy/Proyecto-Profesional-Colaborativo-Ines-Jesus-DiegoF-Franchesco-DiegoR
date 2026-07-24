@@ -20,44 +20,76 @@ francesa de moda (cliente ficticio). Proyecto del bootcamp de 4Geeks Academy —
 
 ## El equipo y el reparto
 
-| Vista | Archivo | Responsable | Rama |
-| --- | --- | --- | --- |
-| Sistema de diseño, navbar y footer | `src/`, `partials/` | Franchesco | *(ya en `main`)* |
-| 1 · Home | `index.html` | Diego Reynoso | `feat/home` |
-| 2 · Catálogo | `catalogo.html` | Diego Fuentes | `feat/catalogo` |
-| 3 · Vista de producto | `producto.html` | *Por asignar* | `feat/producto` |
-| 4 · Carrito | `carrito.html` | *Por asignar* | `feat/carrito` |
-| 5 · Checkout | `checkout.html` | *Por asignar* | `feat/checkout` |
+| Vista | Archivo | Responsable | Rama | Estado |
+| --- | --- | --- | --- | --- |
+| Sistema de diseño, navbar y footer | `src/`, `partials/` | Franchesco | — | ✅ en `main` |
+| 1 · Home | `index.html` | Diego Reynoso | `feat/home` | 🟡 en revisión (PR #4) |
+| 2 · Catálogo | `catalogo.html` | Diego Fuentes | `feat/catalogo` | ✅ en `main` (PR #5) |
+| 3 · Vista de producto | `producto.html` | Franchesco | `feat/producto` | ✅ en `main` (PR #3) |
+| 4 · Carrito | `carrito.html` | Inés | `feat/carrito` | ⬜ sin empezar |
+| 5 · Checkout | `checkout.html` | Jesús | `feat/checkout` | ⬜ sin empezar |
 
-Quedan tres vistas por repartir entre **Franchesco, Inés y Jesús**.
+> Esta tabla es el estado oficial del proyecto. Se actualiza después de cada
+> merge a `main` (ver [Mantenimiento del README](#mantenimiento-del-readme)).
 
-## Estado actual
-
-En `main` está la **base común**, ya terminada:
-
-- El **sistema de diseño** completo: colores de marca, tipografía y componentes.
-- La **navbar y el footer canónicos**, ya insertados e idénticos en las 5 vistas.
-- Las **5 páginas creadas y enlazadas entre sí**, con su `<head>` de SEO propio
-  (título, descripción, Open Graph y Schema.org).
-- Las **fotografías** de la marca en `assets/photos/`.
-
-Lo que falta es el **contenido de cada vista**: el `<main>` de cada página está
-vacío a propósito, con la lista de requisitos dentro en un comentario.
+La **base común** ya está terminada en `main`: sistema de diseño, navbar y footer
+canónicos idénticos en las 5 vistas, las 5 páginas creadas y enlazadas con su
+`<head>` de SEO propio, y las fotografías en `assets/photos/`.
 
 ---
 
 ## Cómo trabajar (importante, leer antes de tocar nada)
 
-### Las tres reglas
+### Las cinco reglas
 
 1. **Cada persona toca SOLO el `<main>` de su archivo.** El `<head>`, la navbar y
    el footer son comunes a las 5 vistas y deben quedar idénticos. Si hay que
    cambiar algo de eso, se habla en el grupo y se cambia **en las 5 a la vez**.
+
 2. **Nadie hace push directo a `main`.** Todo entra por Pull Request, revisado
-   por otra persona del equipo.
-3. **`css/styles.css` es un archivo generado.** Si da conflicto en un merge,
-   **no se arregla a mano jamás**: se acepta cualquiera de las dos versiones,
-   se recompila (`.\build.ps1`) y se commitea el resultado.
+   por otra persona del equipo. *Única excepción:* los commits `build(css)` de
+   recompilación (ver regla 3), porque el contenido de ese fichero no lo decide
+   nadie, lo escribe Tailwind.
+
+3. **NO subas `css/styles.css` desde tu rama.** ⚠️ Es la regla que más problemas
+   nos ha dado.
+
+   Ese fichero lo genera Tailwind. Si dos personas lo suben desde sus ramas,
+   GitHub se encuentra dos versiones distintas del mismo archivo generado y da
+   conflicto. Nos pasó con la home y el catálogo.
+
+   - Trabaja con `.\build.ps1 watch` en una terminal, como siempre. Eso no cambia.
+   - Al commitear, **nombra tus archivos uno a uno**:
+     `git add catalogo.html` ✅ — nunca `git add .` ❌
+   - Antes de cada `push`, un `git status` para confirmar que `css/styles.css`
+     no está en verde.
+
+   **Después de mergear un PR**, quien le dé al botón recompila en `main`:
+
+   ```powershell
+   git checkout main
+   git pull
+   .\build.ps1
+   git add css/styles.css
+   git commit -m "build(css): recompilar tras mergear <lo que sea>"
+   git push
+   ```
+
+   Este paso **no es opcional**: entre el merge y ese push, la vista recién
+   mergeada se ve sin estilos para todo el mundo. Ya nos pasó una vez con el
+   catálogo: faltaban 39 clases y el filtro de talla directamente no aparecía.
+
+4. **Los datos de producto (nombres y precios) se copian, no se inventan.** Si
+   una pieza ya sale en otra vista, usa exactamente el mismo nombre y el mismo
+   precio. No hay base de datos: la fuente de verdad es lo que ya esté en `main`,
+   y en concreto **`producto.html` manda en los precios** (ahí el precio aparece
+   en cinco sitios: título, meta descripción, Schema.org, precio visible y botón).
+
+   Nos pasó con cuatro productos que costaban distinto según la página.
+
+5. **El README lo mantiene Diego Fuentes.** No lo edites desde tu rama de
+   feature: tiene el mismo problema que el CSS, si dos personas tocan la tabla
+   a la vez hay conflicto. Si algo está mal o falta, dilo por el grupo.
 
 ### Pasos
 
@@ -73,15 +105,30 @@ git pull
 # 3. Crear tu rama
 git checkout -b feat/catalogo      # <- la tuya, según la tabla de arriba
 
-# 4. Trabajar, con commits pequeños y frecuentes
+# 4. Trabajar, con commits pequeños y frecuentes.
+#    Nombra tus archivos uno a uno: NUNCA "git add ." (colaría styles.css)
 git add catalogo.html
 git commit -m "feat(catalogo): barra de filtros por categoría y talla"
 
-# 5. Subir tu rama
+# 5. Comprobar que no se cuela el CSS antes de subir
+git status          # css/styles.css debe salir modificado pero SIN preparar
+
+# 6. Subir tu rama
 git push -u origin feat/catalogo
 
-# 6. Abrir el Pull Request en GitHub y pedir revisión a alguien del equipo
+# 7. Abrir el Pull Request en GitHub y pedir revisión a alguien del equipo
+
+# 8. YA MERGEADO: quien pulsa el botón recompila el CSS en main (regla 3)
+git checkout main && git pull
+.\build.ps1
+git add css/styles.css
+git commit -m "build(css): recompilar tras mergear el catálogo"
+git push
 ```
+
+> **Deja una review escrita al aprobar un PR**, aunque sea una línea. El
+> enunciado pide *«Pull Requests revisados»*, y un merge sin review no deja
+> ninguna evidencia de que alguien lo mirara.
 
 ### Mensajes de commit
 
@@ -94,6 +141,26 @@ Convención *Conventional Commits*, en español y en presente:
 | `style:` | solo aspecto visual | `style(catalogo): más aire entre las cards` |
 | `build:` | recompilar el CSS | `build(css): recompilar tras añadir la rejilla` |
 | `docs:` | documentación | `docs: repartir las vistas pendientes` |
+
+### Mantenimiento del README
+
+Lo mantiene **Diego Fuentes** (regla 5). Se actualiza **después de cada merge a
+`main`**, en su propia rama para no mezclarlo con el trabajo de las vistas:
+
+```powershell
+git checkout main && git pull
+git checkout -b docs/readme
+# editar README.md
+git add README.md
+git commit -m "docs: actualizar estado tras mergear la home"
+git push -u origin docs/readme
+```
+
+Qué revisar cada vez:
+
+1. **La tabla de reparto** — ¿alguna vista cambió de estado?
+2. **El checklist de evaluación** del final — ¿ya se puede marcar algo?
+3. **¿Ha salido alguna norma nueva** en el grupo que convenga dejar escrita?
 
 ---
 
@@ -199,9 +266,12 @@ copiado en las 5 páginas. Si cambia, se cambia en el partial y se replica.
 - [x] Navbar y footer reutilizados e idénticos en todas las vistas
 - [x] Estilos compartidos (Tailwind + `src/input.css`)
 - [x] SEO: HTML semántico, `title` y `meta description` únicos, Schema.org
-- [ ] Contenido de las 5 vistas según los requisitos del cliente
+- [ ] Contenido de las 5 vistas según los requisitos del cliente — **2 de 5**
+      (catálogo y producto en `main`; home en revisión; faltan carrito y checkout)
 - [ ] Responsive verificado en móvil (390 px), tablet (768 px) y escritorio (1366 px)
+      — hecho en catálogo, producto y home
 - [ ] Git: una rama por persona, commits repartidos y Pull Requests revisados
+      — ojo, hay PRs mergeados **sin review escrita**: no dejan evidencia
 
 ---
 
