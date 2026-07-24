@@ -150,58 +150,299 @@
     <div class="contenedor">
 
       <!-- ════════════════════════════════════════════════════════════════
-           ZONA DE TRABAJO · VISTA 4 DE 5 — CARRITO
-           ────────────────────────────────────────────────────────────────
-           Responsable: Por asignar (Franchesco / Inés / Jesús)
-           Rama:        feat/carrito
-
-           CONSTRUYE AQUÍ DENTRO, entre <main> y </main>.
-           NO toques nada fuera: el <head>, la navbar y el footer son
-           comunes a las 5 vistas y deben quedar idénticos. Si hay que
-           cambiarlos, se habla con el grupo y se cambia en las 5 a la vez
-           (la referencia está en partials/navbar.html y partials/footer.html).
-
-           Requisitos del cliente que DEBE cumplir esta vista:
-           · Vista completa del carrito (NO un panel lateral)
-           · Listado de productos añadidos: miniatura, precio unitario, cantidad y total por producto
-           · Añadir 3 productos de ejemplo para mostrar el comportamiento visual
-           · Cuadro de totalización: subtotal, impuestos y total
-           · Botón "Comprar" que lleve a checkout.html
-
-           Piezas del sistema de diseño listas para usar
-           (todas definidas en src/input.css, no hace falta inventarlas):
-           · .contenedor         ancho máximo 1200px + márgenes laterales
-           · .etiqueta-seccion   la "ceja" roja en mayúsculas de cada bloque
-           · .separador          línea divisoria gruesa del diseño
-           · .btn + .btn-primario / .btn-secundario / .btn-fantasma
-           · .etiqueta-campo + .campo          formularios
-           · .segmento + .segmento-opcion      filtros y tallas (sin JS)
-           · .etiqueta + .etiqueta-roja / .etiqueta-neutra
-           · .foto-bn            foto en blanco y negro (firma de la marca)
-
-           Colores de marca (usables como bg-, text-, border-):
-           crudo · superficie · tinta · acento · acento-fuerte
-           acento-oscuro · acento-claro · acento-noche · humo · grafito
-
-           Fotos disponibles en assets/photos/:
-           alpine · atelier · camisas-cat · cinturon · derby · hero
-           lino · mocasin · oxford · vaquero · vendome
-
-           IMPORTANTE — si usas una clase de Tailwind que no estuviera ya
-           en el proyecto, no se verá hasta que recompiles el CSS:
-               .\build.ps1      (Windows)
-               sh build.sh      (Mac / Linux)
+           VISTA 4 DE 5 — CARRITO · Responsable: (Franchesco / Inés / Jesús)
+           Rama feat/carrito
+           Solo se edita el interior de <main>. head, navbar y footer son
+           canónicos y comunes a las 5 vistas (ver partials/).
+           Construido con HTML5 semántico + Tailwind CSS v4, sin JavaScript.
            ════════════════════════════════════════════════════════════════ -->
-      <section aria-labelledby="titulo-vista" class="py-[clamp(64px,14vh,140px)] text-center">
-        <span class="etiqueta-seccion">Vista 4 de 5</span>
-        <h1 id="titulo-vista" class="mt-4 text-[clamp(34px,6vw,64px)]">Carrito</h1>
-        <p class="mx-auto mt-6 max-w-[54ch] text-tinta/70">
-          Vista pendiente de desarrollo. La navbar, el footer y el sistema de
-          diseño ya están listos: solo falta el contenido de esta página.
+
+      <!-- ①  CABECERA DE LA VISTA -->
+      <section aria-labelledby="carrito-titulo" class="pt-12 pb-8">
+        <span class="etiqueta-seccion">Tu pedido</span>
+        <h1 id="carrito-titulo" class="mt-3 text-[clamp(32px,4.5vw,52px)]">
+          Carrito
+        </h1>
+        <p class="mt-4 max-w-[56ch] leading-relaxed text-tinta/75">
+          Revisa los artículos antes de tramitar tu pedido. Todos los
+          productos se confeccionan en nuestro atelier de París.
         </p>
-        <p class="mt-6 text-[13px] uppercase tracking-[0.08em] text-tinta/60">
-          Responsable: Por asignar (Franchesco / Inés / Jesús) · Rama <span class="etiqueta etiqueta-neutra">feat/carrito</span>
-        </p>
+      </section>
+
+      <!-- Separador entre cabecera y contenido -->
+      <hr class="separador">
+
+      <!-- ②  LISTADO DE PRODUCTOS EN EL CARRITO ────────────────────────
+           REQUISITO: cada producto muestra miniatura, precio unitario,
+           cantidad y total por producto. 3 productos de ejemplo (4 artículos
+           en total, la camisa va ×2).
+
+           En escritorio: tabla con filas. En móvil: fichas apiladas.
+
+           Las cuentas:
+             Derby « Rive Gauche »   420,00 € × 1 = 420,00 €
+             Camisa Oxford « Lumière » 160,00 € × 2 = 320,00 €
+             Bufanda Cachemir « Alpine » 210,00 € × 1 = 210,00 €
+             ─────────────────────────────────────────────────
+             Total con IVA ........................ 950,00 €
+             Base imponible (950 ÷ 1,21) .......... 785,12 €
+             IVA 21 % ............................. 164,88 €
+             Envío ................. gratuito (pedido > 150 €) -->
+      <section aria-labelledby="listado-titulo" class="py-10">
+
+        <h2 id="listado-titulo" class="sr-only">Productos en tu carrito</h2>
+
+        <!-- Vista escritorio: tabla ---------------------------------- -->
+        <div class="hidden sm:block">
+          <table class="w-full text-left text-[15px]">
+            <caption class="sr-only">Productos añadidos al carrito</caption>
+            <thead>
+              <tr class="border-b-2 border-tinta/40 text-[13px] uppercase tracking-[0.08em] text-tinta/70">
+                <th class="pb-3 pr-4 font-semibold" scope="col">Producto</th>
+                <th class="pb-3 pr-4 font-semibold" scope="col">Precio</th>
+                <th class="pb-3 pr-4 font-semibold" scope="col">Cantidad</th>
+                <th class="pb-3 text-right font-semibold" scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <!-- Fila 1: Derby « Rive Gauche » -->
+              <tr class="border-b border-tinta/20">
+                <td class="py-5 pr-4">
+                  <div class="flex items-center gap-4">
+                    <img src="assets/photos/derby.jpg" width="80" height="107" alt="Derby « Rive Gauche » en piel."
+                         class="foto-bn aspect-[3/4] w-20">
+                    <div>
+                      <p class="font-extrabold">Derby « Rive Gauche »</p>
+                      <p class="mt-0.5 text-[13px] text-tinta/70">Calzado · Cuero de becerro</p>
+                      <button class="mt-2 text-[13px] text-acento-oscuro hover:text-acento cursor-pointer"
+                              aria-label="Eliminar Derby « Rive Gauche » del carrito">
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-5 pr-4 tabular-nums">420,00&nbsp;€</td>
+                <td class="py-5 pr-4">
+                  <span class="inline-flex items-center border border-tinta/40">
+                    <button class="px-2.5 py-1 text-[15px] hover:bg-tinta/5 cursor-pointer"
+                            aria-label="Reducir cantidad de Derby « Rive Gauche »">−</button>
+                    <span class="min-w-[2.5rem] px-2 py-1 text-center text-[15px] tabular-nums">1</span>
+                    <button class="px-2.5 py-1 text-[15px] hover:bg-tinta/5 cursor-pointer"
+                            aria-label="Aumentar cantidad de Derby « Rive Gauche »">+</button>
+                  </span>
+                </td>
+                <td class="py-5 text-right tabular-nums font-extrabold">420,00&nbsp;€</td>
+              </tr>
+
+              <!-- Fila 2: Camisa Oxford « Lumière » (×2) -->
+              <tr class="border-b border-tinta/20">
+                <td class="py-5 pr-4">
+                  <div class="flex items-center gap-4">
+                    <img src="assets/photos/oxford.jpg" width="80" height="107" alt="Camisa Oxford « Lumière » en algodón."
+                         class="foto-bn aspect-[3/4] w-20">
+                    <div>
+                      <p class="font-extrabold">Camisa Oxford « Lumière »</p>
+                      <p class="mt-0.5 text-[13px] text-tinta/70">Camisas · Algodón orgánico</p>
+                      <button class="mt-2 text-[13px] text-acento-oscuro hover:text-acento cursor-pointer"
+                              aria-label="Eliminar Camisa Oxford del carrito">
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-5 pr-4 tabular-nums">160,00&nbsp;€</td>
+                <td class="py-5 pr-4">
+                  <span class="inline-flex items-center border border-tinta/40">
+                    <button class="px-2.5 py-1 text-[15px] hover:bg-tinta/5 cursor-pointer"
+                            aria-label="Reducir cantidad de Camisa Oxford">−</button>
+                    <span class="min-w-[2.5rem] px-2 py-1 text-center text-[15px] tabular-nums">2</span>
+                    <button class="px-2.5 py-1 text-[15px] hover:bg-tinta/5 cursor-pointer"
+                            aria-label="Aumentar cantidad de Camisa Oxford">+</button>
+                  </span>
+                </td>
+                <td class="py-5 text-right tabular-nums font-extrabold">320,00&nbsp;€</td>
+              </tr>
+
+              <!-- Fila 3: Bufanda Cachemir « Alpine » -->
+              <tr class="border-b border-tinta/20">
+                <td class="py-5 pr-4">
+                  <div class="flex items-center gap-4">
+                    <img src="assets/photos/alpine.jpg" width="80" height="107" alt="Bufanda Cachemir « Alpine » en tono gris."
+                         class="foto-bn aspect-[3/4] w-20">
+                    <div>
+                      <p class="font-extrabold">Bufanda Cachemir « Alpine »</p>
+                      <p class="mt-0.5 text-[13px] text-tinta/70">Accesorios · Cachemir 100 %</p>
+                      <button class="mt-2 text-[13px] text-acento-oscuro hover:text-acento cursor-pointer"
+                              aria-label="Eliminar Bufanda Cachemir del carrito">
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-5 pr-4 tabular-nums">210,00&nbsp;€</td>
+                <td class="py-5 pr-4">
+                  <span class="inline-flex items-center border border-tinta/40">
+                    <button class="px-2.5 py-1 text-[15px] hover:bg-tinta/5 cursor-pointer"
+                            aria-label="Reducir cantidad de Bufanda Cachemir">−</button>
+                    <span class="min-w-[2.5rem] px-2 py-1 text-center text-[15px] tabular-nums">1</span>
+                    <button class="px-2.5 py-1 text-[15px] hover:bg-tinta/5 cursor-pointer"
+                            aria-label="Aumentar cantidad de Bufanda Cachemir">+</button>
+                  </span>
+                </td>
+                <td class="py-5 text-right tabular-nums font-extrabold">210,00&nbsp;€</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Vista móvil: fichas apiladas (cada producto = una card) --- -->
+        <div class="flex flex-col gap-6 sm:hidden">
+
+          <!-- Producto 1: Derby -->
+          <article class="flex gap-4 border border-tinta/40 p-4">
+            <img src="assets/photos/derby.jpg" width="80" height="107" alt="Derby « Rive Gauche » en piel."
+                 class="foto-bn aspect-[3/4] w-20 shrink-0">
+            <div class="flex flex-1 flex-col gap-1.5">
+              <h3 class="font-extrabold">Derby « Rive Gauche »</h3>
+              <p class="text-[13px] text-tinta/70">Calzado · Cuero de becerro</p>
+              <p class="tabular-nums">420,00&nbsp;€</p>
+              <div class="mt-1 flex items-center gap-3">
+                <span class="inline-flex items-center border border-tinta/40">
+                  <button class="px-2.5 py-1 text-[15px] hover:bg-tinta/5 cursor-pointer">−</button>
+                  <span class="min-w-[2.5rem] px-2 py-1 text-center text-[15px] tabular-nums">1</span>
+                  <button class="px-2.5 py-1 text-[15px] hover:bg-tinta/5 cursor-pointer">+</button>
+                </span>
+                <span class="ml-auto font-extrabold tabular-nums">420,00&nbsp;€</span>
+              </div>
+              <button class="self-start text-[13px] text-acento-oscuro hover:text-acento cursor-pointer">
+                Eliminar
+              </button>
+            </div>
+          </article>
+
+          <!-- Producto 2: Camisa Oxford (×2) -->
+          <article class="flex gap-4 border border-tinta/40 p-4">
+            <img src="assets/photos/oxford.jpg" width="80" height="107" alt="Camisa Oxford « Lumière » en algodón."
+                 class="foto-bn aspect-[3/4] w-20 shrink-0">
+            <div class="flex flex-1 flex-col gap-1.5">
+              <h3 class="font-extrabold">Camisa Oxford « Lumière »</h3>
+              <p class="text-[13px] text-tinta/70">Camisas · Algodón orgánico</p>
+              <p class="tabular-nums">160,00&nbsp;€</p>
+              <div class="mt-1 flex items-center gap-3">
+                <span class="inline-flex items-center border border-tinta/40">
+                  <button class="px-2.5 py-1 text-[15px] hover:bg-tinta/5 cursor-pointer">−</button>
+                  <span class="min-w-[2.5rem] px-2 py-1 text-center text-[15px] tabular-nums">2</span>
+                  <button class="px-2.5 py-1 text-[15px] hover:bg-tinta/5 cursor-pointer">+</button>
+                </span>
+                <span class="ml-auto font-extrabold tabular-nums">320,00&nbsp;€</span>
+              </div>
+              <button class="self-start text-[13px] text-acento-oscuro hover:text-acento cursor-pointer">
+                Eliminar
+              </button>
+            </div>
+          </article>
+
+          <!-- Producto 3: Bufanda Cachemir -->
+          <article class="flex gap-4 border border-tinta/40 p-4">
+            <img src="assets/photos/alpine.jpg" width="80" height="107" alt="Bufanda Cachemir « Alpine » en tono gris."
+                 class="foto-bn aspect-[3/4] w-20 shrink-0">
+            <div class="flex flex-1 flex-col gap-1.5">
+              <h3 class="font-extrabold">Bufanda Cachemir « Alpine »</h3>
+              <p class="text-[13px] text-tinta/70">Accesorios · Cachemir 100 %</p>
+              <p class="tabular-nums">210,00&nbsp;€</p>
+              <div class="mt-1 flex items-center gap-3">
+                <span class="inline-flex items-center border border-tinta/40">
+                  <button class="px-2.5 py-1 text-[15px] hover:bg-tinta/5 cursor-pointer">−</button>
+                  <span class="min-w-[2.5rem] px-2 py-1 text-center text-[15px] tabular-nums">1</span>
+                  <button class="px-2.5 py-1 text-[15px] hover:bg-tinta/5 cursor-pointer">+</button>
+                </span>
+                <span class="ml-auto font-extrabold tabular-nums">210,00&nbsp;€</span>
+              </div>
+              <button class="self-start text-[13px] text-acento-oscuro hover:text-acento cursor-pointer">
+                Eliminar
+              </button>
+            </div>
+          </article>
+        </div>
+
+      </section>
+
+      <!-- ③  CAJA DE TOTALIZACIÓN ────────────────────────────────────
+           REQUISITO: subtotal, impuestos (IVA), total y botón de compra
+           que lleve a checkout.html.
+
+           Cuentas:
+             Base imponible .............. 785,12 €
+             IVA 21 % ................... 164,88 €
+             Total con IVA .............. 950,00 €
+             Envío ...................... gratuito (pedido > 150 €) -->
+      <section aria-labelledby="resumen-titulo" class="border-t-2 border-tinta/40 pb-16 pt-10">
+
+        <div class="flex flex-col gap-10 lg:flex-row lg:gap-16">
+
+          <!-- Código promocional (opcional visual) -->
+          <div class="lg:w-1/2">
+            <h3 class="mb-3 text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">¿Tienes un código?</h3>
+            <form class="flex gap-3">
+              <label for="codigo-promo" class="sr-only">Código promocional</label>
+              <input id="codigo-promo" type="text" placeholder="ML-2026"
+                     class="campo flex-1 py-2.5">
+              <button type="submit" class="btn btn-secundario whitespace-nowrap">Aplicar</button>
+            </form>
+          </div>
+
+          <!-- Resumen de la compra -->
+          <div class="w-full border-2 border-tinta/40 p-6 sm:p-8 lg:w-1/2">
+            <h2 id="resumen-titulo" class="text-[13px] font-extrabold uppercase tracking-[0.08em] text-tinta/70">
+              Resumen del pedido
+            </h2>
+
+            <hr class="separador my-5">
+
+            <dl class="space-y-3 text-[15px]">
+
+              <div class="flex justify-between">
+                <dt class="text-tinta/75">Base imponible</dt>
+                <dd class="tabular-nums">785,12&nbsp;€</dd>
+              </div>
+
+              <div class="flex justify-between">
+                <dt class="text-tinta/75">IVA (21&nbsp;%)</dt>
+                <dd class="tabular-nums">164,88&nbsp;€</dd>
+              </div>
+
+              <div class="flex justify-between">
+                <dt class="text-tinta/75">Envío</dt>
+                <dd class="tabular-nums text-acento-oscuro font-semibold">Gratuito</dd>
+              </div>
+
+              <hr class="border-t border-tinta/20">
+
+              <div class="flex justify-between text-[20px] font-extrabold">
+                <dt>Total</dt>
+                <dd class="tabular-nums">950,00&nbsp;€</dd>
+              </div>
+            </dl>
+
+            <p class="mt-3 text-[13px] text-tinta/60">
+              Impuestos incluidos. Envío gratuito para pedidos superiores a 150&nbsp;€.
+            </p>
+
+            <a href="checkout.html" class="btn btn-primario mt-6 w-full text-center">
+              Tramitar pedido
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                   stroke-linecap="square" aria-hidden="true">
+                <path d="M5 12h14M13 5l7 7-7 7"/>
+              </svg>
+            </a>
+
+            <a href="catalogo.html" class="btn btn-fantasma mt-3 w-full justify-center">
+              Seguir comprando
+            </a>
+          </div>
+        </div>
       </section>
 
     </div>
