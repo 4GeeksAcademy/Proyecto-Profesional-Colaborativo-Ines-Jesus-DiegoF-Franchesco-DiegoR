@@ -178,60 +178,591 @@
 <!-- END navbar (canónico) -->
 
   <main id="contenido" class="flex-1">
+
+    <!-- ════════════════════════════════════════════════════════════════
+         VISTA 2 DE 5 — CATÁLOGO · Responsable: Diego Fuentes
+         Rama feat/catalogo
+         Solo se edita el interior de <main>. head, navbar y footer son
+         canónicos y comunes a las 5 vistas (ver partials/).
+         Construido con HTML5 semántico + Tailwind CSS v4, sin JavaScript.
+         ════════════════════════════════════════════════════════════════ -->
+
     <div class="contenedor">
 
-      <!-- ════════════════════════════════════════════════════════════════
-           ZONA DE TRABAJO · VISTA 2 DE 5 — CATÁLOGO
-           ────────────────────────────────────────────────────────────────
-           Responsable: Diego Fuentes
-           Rama:        feat/catalogo
-
-           CONSTRUYE AQUÍ DENTRO, entre <main> y </main>.
-           NO toques nada fuera: el <head>, la navbar y el footer son
-           comunes a las 5 vistas y deben quedar idénticos. Si hay que
-           cambiarlos, se habla con el grupo y se cambia en las 5 a la vez
-           (la referencia está en partials/navbar.html y partials/footer.html).
-
-           Requisitos del cliente que DEBE cumplir esta vista:
-           · Barra de filtros ANTES del listado: filtro por categoría y filtro por talla
-           · Listado de productos en rejilla (grid) 4x5 = 20 productos visibles
-           · Responsive: 2 columnas en móvil, 3 en tablet, 4 en escritorio
-           · Cada card enlaza a producto.html
-
-           Piezas del sistema de diseño listas para usar
-           (todas definidas en src/input.css, no hace falta inventarlas):
-           · .contenedor         ancho máximo 1200px + márgenes laterales
-           · .etiqueta-seccion   la "ceja" roja en mayúsculas de cada bloque
-           · .separador          línea divisoria gruesa del diseño
-           · .btn + .btn-primario / .btn-secundario / .btn-fantasma
-           · .etiqueta-campo + .campo          formularios
-           · .segmento + .segmento-opcion      filtros y tallas (sin JS)
-           · .etiqueta + .etiqueta-roja / .etiqueta-neutra
-           · .foto-bn            foto en blanco y negro (firma de la marca)
-
-           Colores de marca (usables como bg-, text-, border-):
-           crudo · superficie · tinta · acento · acento-fuerte
-           acento-oscuro · acento-claro · acento-noche · humo · grafito
-
-           Fotos disponibles en assets/photos/:
-           alpine · atelier · camisas-cat · cinturon · derby · hero
-           lino · mocasin · oxford · vaquero · vendome
-
-           IMPORTANTE — si usas una clase de Tailwind que no estuviera ya
-           en el proyecto, no se verá hasta que recompiles el CSS:
-               .\build.ps1      (Windows)
-               sh build.sh      (Mac / Linux)
-           ════════════════════════════════════════════════════════════════ -->
-      <section aria-labelledby="titulo-vista" class="py-[clamp(64px,14vh,140px)] text-center">
-        <span class="etiqueta-seccion">Vista 2 de 5</span>
-        <h1 id="titulo-vista" class="mt-4 text-[clamp(34px,6vw,64px)]">Catálogo</h1>
-        <p class="mx-auto mt-6 max-w-[54ch] text-tinta/70">
-          Vista pendiente de desarrollo. La navbar, el footer y el sistema de
-          diseño ya están listos: solo falta el contenido de esta página.
+      <!-- ①  CABECERA DE LA VISTA -->
+      <section aria-labelledby="catalogo-titulo" class="pt-12 pb-8">
+        <span class="etiqueta-seccion">Colección Printemps-Été</span>
+        <h1 id="catalogo-titulo" class="mt-3 text-[clamp(32px,4.5vw,52px)]">
+          Todo el catálogo
+        </h1>
+        <p class="mt-4 max-w-[56ch] leading-relaxed text-tinta/75">
+          Veinte piezas confeccionadas en nuestro atelier de París. Filtra
+          por categoría o por talla para encontrar la tuya.
         </p>
-        <p class="mt-6 text-[13px] uppercase tracking-[0.08em] text-tinta/60">
-          Responsable: Diego Fuentes · Rama <span class="etiqueta etiqueta-neutra">feat/catalogo</span>
-        </p>
+      </section>
+
+      <!-- ②  BARRA DE FILTROS (requisito: va ANTES del listado) ──────────
+           Formulario real con method="get": al pulsar "Aplicar", el
+           navegador recarga con lo elegido en la dirección
+           (catalogo.html?cat=calzado&talla=42). Es el mismo formato de
+           enlace que ya usan la home y el footer al mandar aquí.
+
+           LIMITACIÓN CONOCIDA: sin JavaScript la página no puede leer esos
+           parámetros, así que la rejilla no se filtra de verdad ni la opción
+           queda premarcada al volver. Los 20 productos se ven siempre. Es lo
+           esperado en una maqueta y lo que pide el encargo.
+
+           La clase "group" no pinta nada: marca el <form> como referencia
+           para las variantes group-has-[...] del filtro de talla. -->
+      <form action="catalogo.html" method="get"
+            aria-label="Filtrar el catálogo"
+            class="group border-y-2 border-tinta/40 py-5">
+
+        <div class="flex flex-col gap-6 sm:flex-row sm:flex-wrap sm:items-end sm:gap-x-8 sm:gap-y-6">
+
+          <!-- Filtro por CATEGORÍA (requisito). Los value coinciden con los
+               que ya enlazan la home y el footer. -->
+          <div>
+            <span class="etiqueta-campo" id="filtro-categoria">Categoría</span>
+
+            <!-- .segmento es "inline-flex flex-wrap" y con 5 palabras largas
+                 deja "Accesorios" sola con un hueco al lado. En móvil lo
+                 pasamos a rejilla de 2 columnas y desde sm vuelve a la fila
+                 corrida. No se toca src/input.css: es común a las 5 vistas.
+
+                 OJO SI AÑADES O QUITAS CATEGORÍAS: las que caen en la columna
+                 izquierda (1ª, 3ª, 5ª) llevan max-sm:border-l-0 para que el
+                 separador de .segmento no se dibuje pegado al marco, y las
+                 que abren fila llevan max-sm:border-t. Va por posición, así
+                 que hay que revisarlo a mano.
+
+                 Los id="cat-*" no son decorativos: el filtro de talla los usa
+                 desde el CSS para saber qué categoría está marcada. -->
+            <div class="segmento grid w-full grid-cols-2 sm:inline-flex sm:w-auto"
+                 role="radiogroup" aria-labelledby="filtro-categoria">
+
+              <label class="segmento-opcion">
+                <input type="radio" id="cat-todas" name="cat" value="" checked>Todas
+              </label>
+              <label class="segmento-opcion">
+                <input type="radio" id="cat-calzado" name="cat" value="calzado">Calzado
+              </label>
+              <label class="segmento-opcion max-sm:border-l-0 max-sm:border-t max-sm:border-tinta/40">
+                <input type="radio" id="cat-camisas" name="cat" value="camisas">Camisas
+              </label>
+              <label class="segmento-opcion max-sm:border-t max-sm:border-tinta/40">
+                <input type="radio" id="cat-pantalones" name="cat" value="pantalones">Pantalones
+              </label>
+              <!-- col-span-2: si no, quedaría sola en media fila. -->
+              <label class="segmento-opcion max-sm:col-span-2 max-sm:border-l-0 max-sm:border-t max-sm:border-tinta/40">
+                <input type="radio" id="cat-accesorios" name="cat" value="accesorios">Accesorios
+              </label>
+            </div>
+          </div>
+
+          <!-- Filtro por TALLA (requisito) ─── TALLAS DEPENDIENTES DE LA
+               CATEGORÍA, SIN JAVASCRIPT ────────────────────────────────
+               Hay un <select> por categoría y solo se ve el que toca. La
+               variante group-has-[#cat-calzado:checked]:block se traduce a:
+
+                 .group:has(#cat-calzado:checked) .esta-clase { display:block }
+
+               Todos parten de "hidden" y solo uno se enciende, según el
+               radio de categoría que esté marcado.
+
+               ¿Por qué un <select> entero por categoría y no uno solo
+               ocultando <option> sueltas? Porque en iOS el <select> lo
+               dibuja el sistema operativo con su rueda nativa y se salta el
+               CSS: ocultar <option> funciona en escritorio pero NO en móvil.
+               Ocultar el <select> completo funciona en todas partes.
+
+               AVISO: un control oculto con CSS SIGUE ENVIÁNDOSE al pulsar
+               "Aplicar" (solo `disabled` lo evita, y eso no se activa desde
+               CSS). Por eso la dirección sale con varios "talla=" vacíos. En
+               una maqueta da igual, nadie los lee; con un backend detrás
+               habría que resolverlo con JavaScript. -->
+          <div>
+            <span class="etiqueta-campo">Talla</span>
+
+            <!-- Categoría "Todas" → todas las escalas agrupadas -->
+            <select name="talla" aria-label="Talla"
+                    class="campo hidden w-full py-2 group-has-[#cat-todas:checked]:block sm:w-44">
+              <option value="" selected>Todas</option>
+              <optgroup label="Ropa">
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
+              </optgroup>
+              <optgroup label="Calzado">
+                <option>40</option>
+                <option>41</option>
+                <option>42</option>
+                <option>43</option>
+                <option>44</option>
+                <option>45</option>
+              </optgroup>
+              <optgroup label="Pantalón">
+                <option>44</option>
+                <option>46</option>
+                <option>48</option>
+                <option>50</option>
+                <option>52</option>
+              </optgroup>
+            </select>
+
+            <!-- Calzado → numeración de zapato, la misma que producto.html -->
+            <select name="talla" aria-label="Talla de calzado"
+                    class="campo hidden w-full py-2 group-has-[#cat-calzado:checked]:block sm:w-44">
+              <option value="" selected>Todas</option>
+              <option>40</option>
+              <option>41</option>
+              <option>42</option>
+              <option>43</option>
+              <option>44</option>
+              <option>45</option>
+            </select>
+
+            <!-- Camisas → tallas de letra -->
+            <select name="talla" aria-label="Talla de camisa"
+                    class="campo hidden w-full py-2 group-has-[#cat-camisas:checked]:block sm:w-44">
+              <option value="" selected>Todas</option>
+              <option>S</option>
+              <option>M</option>
+              <option>L</option>
+              <option>XL</option>
+            </select>
+
+            <!-- Pantalones → numeración europea de cintura -->
+            <select name="talla" aria-label="Talla de pantalón"
+                    class="campo hidden w-full py-2 group-has-[#cat-pantalones:checked]:block sm:w-44">
+              <option value="" selected>Todas</option>
+              <option>44</option>
+              <option>46</option>
+              <option>48</option>
+              <option>50</option>
+              <option>52</option>
+            </select>
+
+            <!-- Accesorios → cinturones y bufandas no se venden por talla -->
+            <select name="talla" aria-label="Talla de accesorio"
+                    class="campo hidden w-full py-2 group-has-[#cat-accesorios:checked]:block sm:w-44">
+              <option value="" selected>Talla única</option>
+            </select>
+          </div>
+
+          <!-- ORDENAR POR ---------------------------------------------
+               No lo pide el encargo, pero no hay tienda online sin él y
+               el prototipo de referencia también lo lleva. Al ser otro
+               campo del mismo <form>, viaja en la misma dirección:
+               catalogo.html?cat=calzado&talla=42&orden=precio-asc -->
+          <div>
+            <label class="etiqueta-campo" for="filtro-orden">Ordenar por</label>
+            <select id="filtro-orden" name="orden" class="campo w-full py-2 sm:w-52">
+              <option value="novedades" selected>Novedades</option>
+              <option value="precio-asc">Precio: menor a mayor</option>
+              <option value="precio-desc">Precio: mayor a menor</option>
+            </select>
+          </div>
+
+          <!-- Acciones.
+               "Aplicar" es <button type="submit">: envía el formulario.
+               "Limpiar" es un <a> normal que vuelve a catalogo.html sin
+               parámetros — es navegación, no una acción, así que le
+               corresponde un enlace y no un botón. -->
+          <div class="flex flex-wrap gap-3 sm:ml-auto">
+            <button type="submit" class="btn btn-primario">Aplicar filtros</button>
+            <a href="catalogo.html" class="btn btn-secundario">Limpiar</a>
+          </div>
+        </div>
+      </form>
+
+      <!-- ③  REJILLA DE PRODUCTOS ──────────────────────────────────────
+           REQUISITO: 20 productos, 2 columnas en móvil, 3 en tablet, 4 en
+           escritorio. Cada card enlaza a producto.html.
+
+           PRECIOS: los de las piezas que también salen en producto.html
+           (Derby « Rive Gauche », Oxford « Lumière », Sastre « Vendôme » y
+           Cinturón « Bastille ») están copiados de ahí a propósito. Si
+           cambian allí, hay que cambiarlos aquí: no hay fuente única.
+
+           Los alt describen EL PRODUCTO, no la escena de la foto. Es lo que
+           le sirve a quien no ve la imagen, y evita describir mal una foto. -->
+      <section aria-labelledby="listado-titulo" class="py-12">
+        <h2 id="listado-titulo" class="sr-only">Listado de productos</h2>
+
+        <!-- <ul> y no <div> sueltos: un lector de pantalla anuncia "lista de
+             20 elementos" y permite saltar entre ellos. -->
+        <ul class="grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-4">
+
+          <!-- ─────────────── CALZADO ─────────────── -->
+
+          <!-- PLANTILLA DE CARD — las 19 siguientes repiten esta estructura.
+               · "group" hace que el hover en cualquier parte de la card
+                 agrande la foto y tiña el título de rojo.
+               · flex-col + h-full + mt-auto: todas las cards de una fila
+                 acaban a la misma altura y el precio se pega abajo, aunque
+                 los nombres ocupen una o dos líneas.
+               · La foto y el título enlazan al mismo sitio, pero el de la
+                 foto lleva tabindex="-1" aria-hidden="true": si no, recorrer
+                 el catálogo con el teclado costaría 40 tabulaciones en vez
+                 de 20, y un lector de pantalla leería cada producto dos
+                 veces. -->
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=derby-rive-gauche" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/derby.jpg" width="600" height="800" loading="lazy"
+                     alt="Derby « Rive Gauche » en piel."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <span class="etiqueta etiqueta-roja mb-3 self-start">Nuevo</span>
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=derby-rive-gauche" class="group-hover:text-acento">Derby « Rive Gauche »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">420&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=mocasin-saint-germain" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/mocasin.jpg" width="600" height="800" loading="lazy"
+                     alt="Mocasín « Saint-Germain » en piel."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <span class="etiqueta etiqueta-neutra mb-3 self-start">Más vendido</span>
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=mocasin-saint-germain" class="group-hover:text-acento">Mocasín « Saint-Germain »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">290&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=derby-sentier" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/derby.jpg" width="600" height="800" loading="lazy"
+                     alt="Derby « Sentier » en piel con cordones."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=derby-sentier" class="group-hover:text-acento">Derby « Sentier »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">305&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=mocasin-odeon" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/mocasin.jpg" width="600" height="800" loading="lazy"
+                     alt="Mocasín « Odéon » en piel flexible."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=mocasin-odeon" class="group-hover:text-acento">Mocasín « Odéon »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">275&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=botin-montmartre" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/derby.jpg" width="600" height="800" loading="lazy"
+                     alt="Botín « Montmartre » de piel con caña alta."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=botin-montmartre" class="group-hover:text-acento">Botín « Montmartre »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Calzado</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">345&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <!-- ─────────────── CAMISAS ─────────────── -->
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=oxford-lumiere" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/oxford.jpg" width="600" height="800" loading="lazy"
+                     alt="Camisa Oxford « Lumière » en algodón blanco."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <span class="etiqueta etiqueta-neutra mb-3 self-start">Más vendido</span>
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=oxford-lumiere" class="group-hover:text-acento">Camisa Oxford « Lumière »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">160&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=lino-provence" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/lino.jpg" width="600" height="800" loading="lazy"
+                     alt="Camisa de lino « Provence »."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <span class="etiqueta etiqueta-roja mb-3 self-start">Nuevo</span>
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=lino-provence" class="group-hover:text-acento">Camisa Lino « Provence »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">140&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=popelina-marais" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/camisas-cat.jpg" width="600" height="800" loading="lazy"
+                     alt="Camisa de popelina « Marais » en blanco."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=popelina-marais" class="group-hover:text-acento">Camisa Popelina « Marais »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">125&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=oxford-pantheon" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/oxford.jpg" width="600" height="800" loading="lazy"
+                     alt="Camisa Oxford « Panthéon » en algodón."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=oxford-pantheon" class="group-hover:text-acento">Camisa Oxford « Panthéon »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">115&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=lino-camargue" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/lino.jpg" width="600" height="800" loading="lazy"
+                     alt="Camisa de lino « Camargue »."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=lino-camargue" class="group-hover:text-acento">Camisa Lino « Camargue »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Camisas</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">145&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <!-- ─────────────── PANTALONES ─────────────── -->
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=sastre-vendome" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/vendome.jpg" width="600" height="800" loading="lazy"
+                     alt="Pantalón de sastre « Vendôme » en lana."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <span class="etiqueta etiqueta-neutra mb-3 self-start">Más vendido</span>
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=sastre-vendome" class="group-hover:text-acento">Pantalón Sastre « Vendôme »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">260&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=vaquero-belleville" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/vaquero.jpg" width="600" height="800" loading="lazy"
+                     alt="Vaquero « Belleville » de corte recto."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <span class="etiqueta etiqueta-roja mb-3 self-start">Nuevo</span>
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=vaquero-belleville" class="group-hover:text-acento">Vaquero « Belleville »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">160&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=chino-tuileries" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/vendome.jpg" width="600" height="800" loading="lazy"
+                     alt="Pantalón chino « Tuileries » en algodón."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=chino-tuileries" class="group-hover:text-acento">Chino « Tuileries »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">130&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=vaquero-canal" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/vaquero.jpg" width="600" height="800" loading="lazy"
+                     alt="Vaquero « Canal Saint-Martin » de corte holgado."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=vaquero-canal" class="group-hover:text-acento">Vaquero « Canal Saint-Martin »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">155&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=sastre-opera" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/vendome.jpg" width="600" height="800" loading="lazy"
+                     alt="Pantalón de sastre « Opéra » en lana peinada."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=sastre-opera" class="group-hover:text-acento">Pantalón Sastre « Opéra »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Pantalones</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">195&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <!-- ─────────────── ACCESORIOS ─────────────── -->
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=cinturon-bastille" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/cinturon.jpg" width="600" height="800" loading="lazy"
+                     alt="Cinturón de cuero « Bastille » con hebilla metálica."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <span class="etiqueta etiqueta-neutra mb-3 self-start">Más vendido</span>
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=cinturon-bastille" class="group-hover:text-acento">Cinturón Cuero « Bastille »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">130&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=bufanda-alpine" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/alpine.jpg" width="600" height="800" loading="lazy"
+                     alt="Bufanda de cachemir « Alpine »."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <span class="etiqueta etiqueta-roja mb-3 self-start">Nuevo</span>
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=bufanda-alpine" class="group-hover:text-acento">Bufanda Cachemir « Alpine »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">95&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=cinturon-rivoli" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/cinturon.jpg" width="600" height="800" loading="lazy"
+                     alt="Cinturón de piel « Rivoli »."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=cinturon-rivoli" class="group-hover:text-acento">Cinturón Piel « Rivoli »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">85&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=bufanda-vosges" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/alpine.jpg" width="600" height="800" loading="lazy"
+                     alt="Bufanda de lana « Vosges »."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=bufanda-vosges" class="group-hover:text-acento">Bufanda Lana « Vosges »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">80&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+          <li>
+            <article class="group flex h-full flex-col border-2 border-tinta/40 bg-crudo">
+              <a href="producto.html?id=cinturon-etoile" class="block overflow-hidden" tabindex="-1" aria-hidden="true">
+                <img src="assets/photos/cinturon.jpg" width="600" height="800" loading="lazy"
+                     alt="Cinturón trenzado « Étoile » en piel."
+                     class="foto-bn aspect-[3/4] transition-transform duration-500 group-hover:scale-[1.03]">
+              </a>
+              <div class="flex flex-1 flex-col p-4 sm:p-5">
+                <h3 class="text-[16px] leading-snug sm:text-[17px]">
+                  <a href="producto.html?id=cinturon-etoile" class="group-hover:text-acento">Cinturón Trenzado « Étoile »</a>
+                </h3>
+                <p class="mt-1 text-[13px] uppercase tracking-[0.08em] text-tinta/70">Accesorios</p>
+                <p class="mt-auto pt-4 text-[19px] font-extrabold tabular-nums sm:text-[20px]">90&nbsp;€</p>
+              </div>
+            </article>
+          </li>
+
+        </ul>
       </section>
 
     </div>
